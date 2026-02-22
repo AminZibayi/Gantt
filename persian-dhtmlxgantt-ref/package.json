@@ -1,0 +1,39 @@
+{
+  "name": "@yahmat/dhtmlxgantt",
+  "version": "1.0.8",
+  "description": "This Gantt chart is based on dhtmlxGantt to show persian(jalali) date.",
+  "main": "codebase/dhtmlxgantt.js",
+  "types": "codebase/dhtmlxgantt.d.ts",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "jalali",
+    "jalaali",
+    "persian",
+    "khorshidi",
+    "shamsi",
+    "gantt",
+    "dhtmlxgantt",
+    "gantt chart",
+    "jalali gantt",
+    "persian gantt",
+    "shamsi gantt",
+    "farsi gantt",
+    "iran gantt"
+  ],
+  "author": "yahmat",
+  "homepage": "https://github.com/rahmatjafari/persian-dhtmlxgantt",
+  "bugs": {
+    "url": "https://github.com/rahmatjafari/persian-dhtmlxgantt/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rahmatjafari/persian-dhtmlxgantt.git"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "moment-jalaali": "^0.9.6"
+  },
+  "devDependencies": {}
+}
