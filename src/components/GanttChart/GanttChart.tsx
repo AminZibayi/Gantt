@@ -205,6 +205,17 @@ export default function GanttChart({ data, settings, onDataChange }: GanttChartP
         return task.text;
       };
 
+      // Tooltip localization template
+      gantt.templates.tooltip_text = function (start: Date, end: Date, task: any) {
+        const tStart = gantt.templates.tooltip_date_format(start);
+        const tEnd = gantt.templates.tooltip_date_format(end);
+
+        if (settings.language === "fa") {
+          return `<b>فعالیت:</b> ${task.text}<br/><b>شروع:</b> ${tStart}<br/><b>پایان:</b> ${tEnd}`;
+        }
+        return `<b>Task:</b> ${task.text}<br/><b>Start:</b> ${tStart}<br/><b>End:</b> ${tEnd}`;
+      };
+
       // Locale labels
       if (settings.language === "fa") {
         gantt.i18n.setLocale({
