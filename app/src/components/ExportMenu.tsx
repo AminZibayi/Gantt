@@ -29,7 +29,7 @@ export default function ExportMenu({ ganttData, settings, onClose }: ExportMenuP
     {
       label: t('export.excel'),
       icon: <FileSpreadsheet size={20} className="text-emerald-600" />,
-      onClick: () => { exportExcel(ganttData, settings); onClose(); },
+      onClick: () => { exportExcel(ganttData, settings).then(() => onClose()); },
       description: 'Tasks and links in Excel format',
     },
     {

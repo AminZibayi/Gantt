@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import { GanttTask, ImportError, ImportResult } from '@/types';
 
 const REQUIRED_COLUMNS = ['text', 'start_date', 'duration'];
@@ -87,15 +87,19 @@ function validateRows(rows: Record<string, string>[]): {
         row: rowNum,
         column: 'duration',
       });
-    } else if (isNaN(Number(durationStr)) || Number(durationStr) <= 0) {
-      errors.push({
-        type: 'error',
-        message: `Invalid duration in row ${rowNum}: "${durationStr}"`,
-        row: rowNum,
-        column: 'duration',
-      });
+    } else {
+      const durationNum = Number(durationStr);
+      if (isNaN(durationNum) || durationNum <= 0) {
+        errors.push({
+          type: 'error',
+          message: `Invalid duration in row ${rowNum}: "${durationStr}"`,
+          row: rowNum,
+          column: 'duration',
+        });
+      }
     }
 
+    const durationNum = Number(durationStr);
     const progress = row['progress'] ? Number(row['progress']) : 0;
     tasks.push({
       id: row['id'] ? String(row['id']) : String(index + 1),
@@ -103,7 +107,7 @@ function validateRows(rows: Record<string, string>[]): {
       start_date: startDate
         ? normalizeDate(startDate)
         : new Date().toISOString().split('T')[0],
-      duration: Number(durationStr) || 1,
+      duration: isNaN(durationNum) ? 1 : durationNum || 1,
       progress: isNaN(progress) ? 0 : Math.min(1, Math.max(0, progress)),
       parent: row['parent'] ? String(row['parent']) : undefined,
       color: row['color'] || undefined,
@@ -138,23 +142,31 @@ export async function parseCSV(file: File): Promise<ImportResult> {
 export async function parseExcel(file: File): Promise<ImportResult> {
   return new Promise((resolve) => {
     const reader = new FileReader();
-    reader.onload = (e) => {
+    reader.onload = async (e) => {
       try {
-        const data = new Uint8Array(e.target?.result as ArrayBuffer);
-        const workbook = XLSX.read(data, { type: 'array' });
-        const sheetName = workbook.SheetNames[0];
-        const sheet = workbook.Sheets[sheetName];
-        const rows = XLSX.utils.sheet_to_json<Record<string, string>>(sheet, {
-          defval: '',
-        });
-        const normalizedRows = rows.map((row) => {
-          const normalized: Record<string, string> = {};
-          for (const key of Object.keys(row)) {
-            normalized[key.trim().toLowerCase()] = String(row[key]);
+        const buffer = e.target?.result as ArrayBuffer;
+        const workbook = new ExcelJS.Workbook();
+        await workbook.xlsx.load(buffer);
+        const worksheet = workbook.worksheets[0];
+        if (!worksheet) {
+          resolve({ data: [], links: [], errors: [{ type: 'error', message: 'No worksheets found in file' }], warnings: [] });
+          return;
+        }
+        const rows: Record<string, string>[] = [];
+        let headers: string[] = [];
+        worksheet.eachRow((row, rowNum) => {
+          const values = (row.values as (string | number | null)[]).slice(1); // index 0 is undefined in exceljs
+          if (rowNum === 1) {
+            headers = values.map((v) => String(v ?? '').trim().toLowerCase());
+          } else {
+            const rowObj: Record<string, string> = {};
+            headers.forEach((h, i) => {
+              rowObj[h] = String(values[i] ?? '');
+            });
+            rows.push(rowObj);
           }
-          return normalized;
         });
-        const { tasks, errors, warnings } = validateRows(normalizedRows);
+        const { tasks, errors, warnings } = validateRows(rows);
         resolve({ data: tasks, links: [], errors, warnings });
       } catch (err) {
         resolve({

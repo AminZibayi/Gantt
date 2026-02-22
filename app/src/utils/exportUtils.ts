@@ -1,5 +1,5 @@
 import Papa from 'papaparse';
-import * as XLSX from 'xlsx';
+import ExcelJS from 'exceljs';
 import { GanttData, AppSettings } from '@/types';
 
 export function exportJSON(data: GanttData, settings: AppSettings): void {
@@ -21,41 +21,64 @@ export function exportCSV(data: GanttData): void {
   downloadFile(csv, 'gantt-data.csv', 'text/csv');
 }
 
-export function exportExcel(data: GanttData, settings: AppSettings): void {
-  const rows = data.data.map((task) => ({
-    ID: task.id,
-    'Task Name': task.text,
-    'Start Date': task.start_date,
-    Duration: task.duration,
-    Progress: task.progress ?? 0,
-    Parent: task.parent ?? '',
-    Color: task.color ?? '',
-  }));
+export async function exportExcel(data: GanttData, settings: AppSettings): Promise<void> {
+  const workbook = new ExcelJS.Workbook();
+  workbook.creator = settings.branding.companyName;
+  workbook.created = new Date();
 
-  const wb = XLSX.utils.book_new();
-  const ws = XLSX.utils.json_to_sheet(rows);
+  const tasksSheet = workbook.addWorksheet('Tasks');
 
-  XLSX.utils.sheet_add_aoa(
-    ws,
-    [[`${settings.branding.companyName} - Gantt Chart Export`]],
-    { origin: 'A1' }
-  );
-  XLSX.utils.sheet_add_json(ws, rows, { origin: 'A3' });
+  // Company header row
+  tasksSheet.addRow([`${settings.branding.companyName} - Gantt Chart Export`]);
+  tasksSheet.addRow([]);
 
-  XLSX.utils.book_append_sheet(wb, ws, 'Tasks');
+  // Column headers
+  tasksSheet.addRow(['ID', 'Task Name', 'Start Date', 'Duration', 'Progress', 'Parent', 'Color']);
+  const headerRow = tasksSheet.getRow(3);
+  headerRow.font = { bold: true };
+  headerRow.fill = {
+    type: 'pattern',
+    pattern: 'solid',
+    fgColor: { argb: 'FFEFF6FF' },
+  };
 
-  const linksRows = data.links.map((link) => ({
-    ID: link.id,
-    Source: link.source,
-    Target: link.target,
-    Type: link.type,
-  }));
-  if (linksRows.length > 0) {
-    const wsLinks = XLSX.utils.json_to_sheet(linksRows);
-    XLSX.utils.book_append_sheet(wb, wsLinks, 'Links');
+  // Task data
+  data.data.forEach((task) => {
+    tasksSheet.addRow([
+      task.id,
+      task.text,
+      task.start_date,
+      task.duration,
+      task.progress ?? 0,
+      task.parent ?? '',
+      task.color ?? '',
+    ]);
+  });
+
+  tasksSheet.columns.forEach((col) => { col.width = 16; });
+
+  // Links sheet
+  if (data.links.length > 0) {
+    const linksSheet = workbook.addWorksheet('Links');
+    linksSheet.addRow(['ID', 'Source', 'Target', 'Type']);
+    linksSheet.getRow(1).font = { bold: true };
+    data.links.forEach((link) => {
+      linksSheet.addRow([link.id, link.source, link.target, link.type]);
+    });
   }
 
-  XLSX.writeFile(wb, 'gantt-data.xlsx');
+  const buffer = await workbook.xlsx.writeBuffer();
+  const blob = new Blob([buffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+  });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'gantt-data.xlsx';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
 }
 
 export function printGantt(): void {
