@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "Gantt Chart",
+    "subtitle": "Project Planning & Management"
+  },
+  "nav": {
+    "import": "Import",
+    "export": "Export",
+    "settings": "Settings",
+    "yaml": "YAML Editor",
+    "print": "Print"
+  },
+  "gantt": {
+    "task": "Task",
+    "start_date": "Start Date",
+    "duration": "Duration",
+    "progress": "Progress",
+    "addTask": "Add Task",
+    "editTask": "Edit Task",
+    "deleteTask": "Delete Task",
+    "noTasks": "No tasks yet. Import data or add tasks manually."
+  },
+  "import": {
+    "title": "Import Data",
+    "description": "Import tasks from CSV or Excel files",
+    "dropzone": "Drop your CSV or Excel file here, or click to browse",
+    "validating": "Validating file...",
+    "errors": "Validation Errors",
+    "warnings": "Warnings",
+    "confirm": "Import Anyway",
+    "cancel": "Cancel",
+    "success": "Data imported successfully",
+    "columns": "Required columns: text, start_date, duration",
+    "preview": "Preview ({count} rows)"
+  },
+  "export": {
+    "title": "Export Data",
+    "json": "Export JSON",
+    "csv": "Export CSV",
+    "excel": "Export Excel",
+    "print": "Print / PDF"
+  },
+  "settings": {
+    "title": "Settings",
+    "branding": "Branding",
+    "companyName": "Company Name",
+    "primaryColor": "Primary Color",
+    "logo": "Company Logo",
+    "uploadLogo": "Upload Logo",
+    "removeLogo": "Remove Logo",
+    "save": "Save Settings",
+    "language": "Language",
+    "calendar": "Calendar",
+    "gregorian": "Gregorian",
+    "jalali": "Jalali (Persian)"
+  },
+  "yaml": {
+    "title": "YAML/JSON Editor",
+    "description": "Edit all project data and settings as YAML",
+    "apply": "Apply Changes",
+    "reset": "Reset",
+    "error": "YAML Parse Error"
+  },
+  "colors": {
+    "title": "Task Colors",
+    "pickColor": "Pick Color"
+  },
+  "errors": {
+    "missingColumn": "Missing required column: {column}",
+    "invalidDate": "Invalid date format in row {row}: {value}",
+    "missingValue": "Missing value in row {row}, column: {column}",
+    "invalidDuration": "Invalid duration in row {row}: {value}"
+  },
+  "shortcuts": {
+    "title": "Keyboard Shortcuts",
+    "addTask": "Add Task",
+    "import": "Import",
+    "export": "Export",
+    "print": "Print",
+    "yaml": "Open YAML Editor"
+  }
+}

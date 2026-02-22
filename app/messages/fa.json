@@ -1,0 +1,82 @@
+{
+  "app": {
+    "title": "نمودار گانت",
+    "subtitle": "برنامه‌ریزی و مدیریت پروژه"
+  },
+  "nav": {
+    "import": "وارد کردن",
+    "export": "خروجی",
+    "settings": "تنظیمات",
+    "yaml": "ویرایشگر YAML",
+    "print": "چاپ"
+  },
+  "gantt": {
+    "task": "وظیفه",
+    "start_date": "تاریخ شروع",
+    "duration": "مدت",
+    "progress": "پیشرفت",
+    "addTask": "افزودن وظیفه",
+    "editTask": "ویرایش وظیفه",
+    "deleteTask": "حذف وظیفه",
+    "noTasks": "هیچ وظیفه‌ای وجود ندارد. داده وارد کنید یا وظیفه اضافه کنید."
+  },
+  "import": {
+    "title": "وارد کردن داده",
+    "description": "وارد کردن وظایف از فایل CSV یا Excel",
+    "dropzone": "فایل CSV یا Excel خود را اینجا بکشید یا برای مرور کلیک کنید",
+    "validating": "در حال اعتبارسنجی...",
+    "errors": "خطاهای اعتبارسنجی",
+    "warnings": "هشدارها",
+    "confirm": "وارد کردن به هر حال",
+    "cancel": "لغو",
+    "success": "داده‌ها با موفقیت وارد شدند",
+    "columns": "ستون‌های مورد نیاز: text، start_date، duration",
+    "preview": "پیش‌نمایش ({count} ردیف)"
+  },
+  "export": {
+    "title": "خروجی داده",
+    "json": "خروجی JSON",
+    "csv": "خروجی CSV",
+    "excel": "خروجی Excel",
+    "print": "چاپ / PDF"
+  },
+  "settings": {
+    "title": "تنظیمات",
+    "branding": "برندینگ",
+    "companyName": "نام شرکت",
+    "primaryColor": "رنگ اصلی",
+    "logo": "لوگوی شرکت",
+    "uploadLogo": "بارگذاری لوگو",
+    "removeLogo": "حذف لوگو",
+    "save": "ذخیره تنظیمات",
+    "language": "زبان",
+    "calendar": "تقویم",
+    "gregorian": "میلادی",
+    "jalali": "جلالی (شمسی)"
+  },
+  "yaml": {
+    "title": "ویرایشگر YAML/JSON",
+    "description": "ویرایش تمام داده‌های پروژه و تنظیمات به صورت YAML",
+    "apply": "اعمال تغییرات",
+    "reset": "بازنشانی",
+    "error": "خطای تجزیه YAML"
+  },
+  "colors": {
+    "title": "رنگ‌های وظیفه",
+    "pickColor": "انتخاب رنگ"
+  },
+  "errors": {
+    "missingColumn": "ستون مورد نیاز وجود ندارد: {column}",
+    "invalidDate": "فرمت تاریخ نامعتبر در ردیف {row}: {value}",
+    "missingValue": "مقدار خالی در ردیف {row}، ستون: {column}",
+    "invalidDuration": "مدت نامعتبر در ردیف {row}: {value}"
+  },
+  "shortcuts": {
+    "title": "میانبرهای صفحه‌کلید",
+    "addTask": "افزودن وظیفه",
+    "import": "وارد کردن",
+    "export": "خروجی",
+    "print": "چاپ",
+    "yaml": "باز کردن ویرایشگر YAML"
+  }
+}

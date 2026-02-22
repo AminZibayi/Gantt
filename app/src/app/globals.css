@@ -1,0 +1,110 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Vazirmatn:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary: #4f46e5;
+  --secondary: #7c3aed;
+}
+
+html[lang="fa"],
+html[dir="rtl"] {
+  font-family: 'Vazirmatn', sans-serif;
+}
+
+html[lang="en"],
+html[dir="ltr"] {
+  font-family: 'Inter', sans-serif;
+}
+
+body {
+  background: #f8fafc;
+  min-height: 100vh;
+}
+
+/* Gantt container */
+.gantt-container {
+  width: 100%;
+  height: calc(100vh - 140px);
+  min-height: 400px;
+}
+
+/* Print styles */
+@media print {
+  .no-print {
+    display: none !important;
+  }
+  .print-header {
+    display: block !important;
+  }
+  body {
+    background: white;
+  }
+  .gantt-container {
+    height: auto;
+    min-height: 600px;
+  }
+}
+
+.print-header {
+  display: none;
+}
+
+/* RTL support */
+[dir="rtl"] .gantt_grid_head_cell,
+[dir="rtl"] .gantt_cell {
+  text-align: right;
+}
+
+/* Scrollbar styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #64748b;
+}
+
+/* Modal overlay */
+.modal-overlay {
+  animation: fadeIn 0.2s ease-out;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* Tooltip */
+.tooltip {
+  position: relative;
+}
+.tooltip::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: #1e293b;
+  color: white;
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s;
+  z-index: 100;
+}
+.tooltip:hover::after {
+  opacity: 1;
+}
