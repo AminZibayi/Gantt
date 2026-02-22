@@ -1,15 +1,24 @@
 import { useTranslation } from "react-i18next";
-import { FiSettings, FiGlobe } from "react-icons/fi";
+import { FiSettings, FiSun, FiMoon } from "react-icons/fi";
 import type { BrandingConfig } from "../../types";
 
 interface HeaderProps {
   branding: BrandingConfig;
   language: string;
+  colorScheme: "dark" | "light";
   onToggleLanguage: () => void;
+  onToggleColorScheme: () => void;
   onOpenSettings: () => void;
 }
 
-export default function Header({ branding, language, onToggleLanguage, onOpenSettings }: HeaderProps) {
+export default function Header({
+  branding,
+  language,
+  colorScheme,
+  onToggleLanguage,
+  onToggleColorScheme,
+  onOpenSettings,
+}: HeaderProps) {
   const { t } = useTranslation();
 
   return (
@@ -35,6 +44,13 @@ export default function Header({ branding, language, onToggleLanguage, onOpenSet
             English
           </button>
         </div>
+
+        <button
+          className='btn btn-ghost btn-icon tooltip'
+          data-tooltip={colorScheme === "dark" ? "Light Mode" : "Dark Mode"}
+          onClick={onToggleColorScheme}>
+          {colorScheme === "dark" ? <FiSun /> : <FiMoon />}
+        </button>
 
         <button className='btn btn-ghost btn-icon tooltip' data-tooltip={t("header.settings")} onClick={onOpenSettings}>
           <FiSettings />

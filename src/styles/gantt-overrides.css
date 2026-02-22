@@ -1,5 +1,39 @@
 /* ===== dhtmlxGantt Overrides for Dark Theme & RTL ===== */
 
+/* Override dhtmlxGantt CSS variables for dark theme */
+:root,
+[data-color-scheme="dark"] {
+  --dhx-gantt-base-colors-white: var(--surface-bg);
+  --dhx-gantt-base-colors-hover-color: var(--surface-hover);
+  --dhx-gantt-base-colors-border-light: var(--surface-border);
+  --dhx-gantt-base-colors-border: var(--surface-border-light);
+  --dhx-gantt-base-colors-text: var(--text-primary);
+  --dhx-gantt-base-colors-text-light: var(--text-secondary);
+  --dhx-gantt-base-colors-select: var(--surface-hover);
+  --dhx-gantt-link-background: var(--text-muted);
+  --dhx-gantt-link-background-hover: var(--color-primary);
+  /* Tooltip: make it visible against the dark surface */
+  --dhx-gantt-tooltip-background: var(--surface-elevated);
+  --dhx-gantt-tooltip-color: var(--text-primary);
+  --dhx-gantt-tooltip-border: 1px solid var(--surface-border-light);
+}
+
+[data-color-scheme="light"] {
+  --dhx-gantt-base-colors-white: #ffffff;
+  --dhx-gantt-base-colors-hover-color: #f0f0f5;
+  --dhx-gantt-base-colors-border-light: #e8e8ef;
+  --dhx-gantt-base-colors-border: #d0d0da;
+  --dhx-gantt-base-colors-text: #1a1d2e;
+  --dhx-gantt-base-colors-text-light: #555870;
+  --dhx-gantt-base-colors-select: #e8eeff;
+  --dhx-gantt-link-background: #8888a0;
+  --dhx-gantt-link-background-hover: var(--color-primary);
+  /* Tooltip: use surface card style to match light design system */
+  --dhx-gantt-tooltip-background: #1a1d2e;
+  --dhx-gantt-tooltip-color: #f4f5fb;
+  --dhx-gantt-tooltip-border: none;
+}
+
 /* Container */
 .gantt_container {
   background: var(--surface-bg) !important;
@@ -86,16 +120,16 @@
   font-size: 0.7rem !important;
 }
 
-/* Links */
-.gantt_task_link .gantt_line_wrapper div {
-  background: var(--text-muted) !important;
+/* Links – use dhtmlxGantt CSS variable (works with icon-font-based arrows) */
+.gantt_task_link {
+  --dhx-gantt-link-background: var(--text-muted);
 }
 
-.gantt_task_link:hover .gantt_line_wrapper div {
-  background: var(--color-primary) !important;
-  box-shadow: 0 0 8px rgba(67, 97, 238, 0.5) !important;
+.gantt_task_link:hover {
+  --dhx-gantt-link-background: var(--color-primary);
 }
 
+/* Legacy border-based arrows (kept for compatibility) */
 .gantt_link_arrow {
   border-color: var(--text-muted) !important;
 }
@@ -112,6 +146,35 @@
 
 .gantt_data_area {
   background: var(--surface-bg) !important;
+}
+
+/* Timeline task rows (right side of divider) – must match grid rows */
+.gantt_task_row {
+  background: var(--surface-card) !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+}
+
+.gantt_task_row.odd {
+  background: var(--surface-elevated) !important;
+}
+
+.gantt_task_row:hover,
+.gantt_task_row.odd:hover {
+  background: var(--surface-hover) !important;
+}
+
+.gantt_task_row.gantt_selected,
+.gantt_task_row.odd.gantt_selected {
+  background: rgba(67, 97, 238, 0.15) !important;
+}
+
+/* Vertical grid lines in timeline area */
+.gantt_task_vline {
+  border-color: var(--surface-border) !important;
+}
+
+.gantt_task_hline {
+  border-color: var(--surface-border) !important;
 }
 
 /* Grid divider */
@@ -210,4 +273,148 @@ html[lang="en"] .gantt_tooltip,
 html[lang="en"] .gantt_cal_ltitle span,
 html[lang="en"] .gantt_btn {
   font-family: var(--font-en) !important;
+}
+
+/* ===== RTL scale header direction ===== */
+/* In RTL mode, force scale cell text to flow right-to-left (library doesn't do this by default) */
+.gantt_rtl .gantt_scale_cell {
+  direction: rtl;
+  unicode-bidi: embed;
+  text-align: center;
+}
+/* NOTE: do NOT override gantt_grid_head_cell text-align in RTL —
+   the library already handles alignment via direction:rtl on the container.
+   Overriding breaks the natural centered layout. */
+
+/* Tooltip: dhtmlxGantt appends .gantt_tooltip to <body>, outside the RTL container,
+   so it does NOT inherit direction:rtl. We must set it explicitly for Persian. */
+html[lang="fa"] .gantt_tooltip {
+  direction: rtl;
+  text-align: right;
+  align-items: flex-end; /* flex-end = right side in RTL column flex */
+  padding: 8px 8px 8px 16px; /* swap the asymmetric padding for RTL */
+}
+
+/* RTL link arrows: the library rotates gantt_link_arrow_left 180deg.
+   When the container is RTL, we need to re-rotate to keep arrows pointing at target tasks. */
+.gantt_rtl .gantt_link_arrow_left {
+  transform: rotate(0deg) !important;
+}
+
+.gantt_rtl .gantt_link_arrow_right {
+  transform: rotate(180deg) !important;
+}
+
+/* ===== Light mode overrides ===== */
+[data-color-scheme="light"] .gantt_container {
+  background: #f8f9ff !important;
+}
+
+[data-color-scheme="light"] .gantt_grid {
+  background: #ffffff !important;
+}
+
+[data-color-scheme="light"] .gantt_grid_head_cell {
+  background: #f0f1f8 !important;
+  color: #555870 !important;
+  border-bottom: 1px solid #d0d0da !important;
+  border-right: 1px solid #d0d0da !important;
+}
+
+[data-color-scheme="light"] .gantt_grid_data .gantt_cell {
+  color: #1a1d2e !important;
+  border-bottom: 1px solid #e8e8ef !important;
+  border-right: 1px solid #e8e8ef !important;
+}
+
+[data-color-scheme="light"] .gantt_row {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e8e8ef !important;
+}
+
+[data-color-scheme="light"] .gantt_row.odd {
+  background: #f8f9ff !important;
+}
+
+[data-color-scheme="light"] .gantt_row:hover,
+[data-color-scheme="light"] .gantt_row.odd:hover {
+  background: #eef0fc !important;
+}
+
+[data-color-scheme="light"] .gantt_row.gantt_selected {
+  background: rgba(67, 97, 238, 0.1) !important;
+}
+
+[data-color-scheme="light"] .gantt_scale_line {
+  background: #f0f1f8 !important;
+  border-bottom: 1px solid #d0d0da !important;
+}
+
+[data-color-scheme="light"] .gantt_scale_cell {
+  color: #555870 !important;
+  border-right: 1px solid #d0d0da !important;
+}
+
+[data-color-scheme="light"] .gantt_data_area {
+  background: #f8f9ff !important;
+}
+
+[data-color-scheme="light"] .gantt_task_row {
+  background: #ffffff !important;
+  border-bottom: 1px solid #e8e8ef !important;
+}
+
+[data-color-scheme="light"] .gantt_task_row.odd {
+  background: #f8f9ff !important;
+}
+
+[data-color-scheme="light"] .gantt_task_row:hover,
+[data-color-scheme="light"] .gantt_task_row.odd:hover {
+  background: #eef0fc !important;
+}
+
+[data-color-scheme="light"] .gantt_task_row.gantt_selected,
+[data-color-scheme="light"] .gantt_task_row.odd.gantt_selected {
+  background: rgba(67, 97, 238, 0.1) !important;
+}
+
+[data-color-scheme="light"] .gantt_task_vline {
+  border-color: #e8e8ef !important;
+}
+
+[data-color-scheme="light"] .gantt_task_hline {
+  border-color: #e8e8ef !important;
+}
+
+[data-color-scheme="light"] .gantt_task_scale .gantt_scale_cell {
+  color: #555870 !important;
+}
+
+[data-color-scheme="light"] .gantt_cal_light {
+  background: #ffffff !important;
+  border: 1px solid #d0d0da !important;
+  color: #1a1d2e !important;
+}
+
+[data-color-scheme="light"] .gantt_cal_light .gantt_cal_ltext textarea,
+[data-color-scheme="light"] .gantt_cal_light input {
+  background: #f8f9ff !important;
+  border: 1px solid #d0d0da !important;
+  color: #1a1d2e !important;
+}
+
+[data-color-scheme="light"] .gantt_cal_ltitle span {
+  color: #1a1d2e !important;
+}
+
+[data-color-scheme="light"] .gantt_section_title {
+  color: #555870 !important;
+}
+
+[data-color-scheme="light"] .gantt_resizer {
+  background: #d0d0da !important;
+}
+
+[data-color-scheme="light"] .gantt_layout_content {
+  border-color: #d0d0da !important;
 }

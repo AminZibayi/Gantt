@@ -41,6 +41,7 @@ export interface AppSettings {
   language: "fa" | "en";
   calendar: "jalali" | "gregorian";
   theme: "material" | "broadway" | "meadow" | "skyblue" | "terrace" | "contrast_black" | "contrast_white";
+  colorScheme: "dark" | "light";
   zoomLevel: "day" | "week" | "month" | "quarter" | "year";
   showGrid: boolean;
   showLinks: boolean;

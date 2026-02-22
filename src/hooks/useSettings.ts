@@ -5,6 +5,7 @@ const defaultSettings: AppSettings = {
   language: "fa",
   calendar: "jalali",
   theme: "material",
+  colorScheme: "dark",
   zoomLevel: "month",
   showGrid: true,
   showLinks: true,

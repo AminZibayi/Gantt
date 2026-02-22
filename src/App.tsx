@@ -1,8 +1,9 @@
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "./components/Header/Header";
 import Toolbar from "./components/Toolbar/Toolbar";
 import GanttChart from "./components/GanttChart/GanttChart";
+import type { GanttChartRef } from "./components/GanttChart/GanttChart";
 import ImportDialog from "./components/ImportDialog/ImportDialog";
 import ExportDialog from "./components/ExportDialog/ExportDialog";
 import SettingsPanel from "./components/SettingsPanel/SettingsPanel";
@@ -19,18 +20,20 @@ export default function App() {
   const { data, setData, importData, getNextId } = useGanttData();
   const { settings, updateSetting } = useSettings();
   const { branding, updateBranding, setLogo, removeLogo } = useBranding();
+  const ganttChartRef = useRef<GanttChartRef>(null);
 
   const [showImport, setShowImport] = useState(false);
   const [showExport, setShowExport] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
-  // Sync language, direction, and HTML attributes
+  // Sync language, direction, HTML attributes, and color scheme
   const currentLang = settings.language;
   const dir = currentLang === "fa" ? "rtl" : "ltr";
 
   // Apply to document
   document.documentElement.lang = currentLang;
   document.documentElement.dir = dir;
+  document.documentElement.setAttribute("data-color-scheme", settings.colorScheme ?? "dark");
 
   const toggleLanguage = useCallback(() => {
     const newLang = currentLang === "fa" ? "en" : "fa";
@@ -99,9 +102,8 @@ export default function App() {
   }, [setData]);
 
   const handleToday = useCallback(() => {
-    // The gantt chart will re-render and scroll to today's marker
-    updateSetting("showToday", true);
-  }, [updateSetting]);
+    ganttChartRef.current?.scrollToToday();
+  }, []);
 
   const handlePrint = useCallback(() => {
     window.print();
@@ -123,7 +125,9 @@ export default function App() {
       <Header
         branding={branding}
         language={currentLang}
+        colorScheme={settings.colorScheme ?? "dark"}
         onToggleLanguage={toggleLanguage}
+        onToggleColorScheme={() => updateSetting("colorScheme", settings.colorScheme === "light" ? "dark" : "light")}
         onOpenSettings={() => setShowSettings(true)}
       />
 
@@ -143,6 +147,7 @@ export default function App() {
       <div className='app-main'>
         <GanttChart
           key={`${settings.language}-${settings.calendar}-${settings.zoomLevel}`}
+          ref={ganttChartRef}
           data={data}
           settings={settings}
           onDataChange={handleDataChange}

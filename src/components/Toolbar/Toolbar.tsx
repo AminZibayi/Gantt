@@ -109,7 +109,7 @@ export default function Toolbar({
           onClick={onCollapseAll}>
           <FiChevronsUp />
         </button>
-        <button className='btn btn-ghost btn-sm tooltip' data-tooltip={t("toolbar.today")} onClick={onToday}>
+        <button className='btn btn-ghost btn-sm' onClick={onToday}>
           <FiCalendar /> {t("toolbar.today")}
         </button>
       </div>

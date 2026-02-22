@@ -1,10 +1,14 @@
-import { useEffect, useRef, useCallback } from "react";
+import { useEffect, useRef, useCallback, forwardRef, useImperativeHandle } from "react";
 import jalaali from "jalaali-js";
 import type { GanttData, AppSettings } from "../../types";
 
 // Import local gantt library CSS
 import "../../../codebase/dhtmlxgantt.css";
 import "../../styles/gantt-overrides.css";
+
+export interface GanttChartRef {
+  scrollToToday: () => void;
+}
 
 // Persian month names for Jalali calendar
 const JALALI_MONTHS = [
@@ -50,10 +54,25 @@ interface GanttChartProps {
   onDataChange: (data: GanttData) => void;
 }
 
-export default function GanttChart({ data, settings, onDataChange }: GanttChartProps) {
+const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChart(
+  { data, settings, onDataChange },
+  ref
+) {
   const containerRef = useRef<HTMLDivElement>(null);
   const ganttRef = useRef<any>(null);
   const initializedRef = useRef(false);
+
+  useImperativeHandle(
+    ref,
+    () => ({
+      scrollToToday: () => {
+        if (ganttRef.current && initializedRef.current) {
+          ganttRef.current.showDate(new Date(), "month");
+        }
+      },
+    }),
+    []
+  );
 
   const configureGantt = useCallback(
     (gantt: any) => {
@@ -127,13 +146,20 @@ export default function GanttChart({ data, settings, onDataChange }: GanttChartP
       const jMonthYearFull = (d: Date) => `${jMonthName(d)} ${jYear(d)}`;
       const jMonthYearShort = (d: Date) => `${jMonthNameShort(d)} ${jYear(d)}`;
 
+      // Gregorian formatting helpers – always English months regardless of active locale
+      const gMonthFull = (d: Date) => GREGORIAN_MONTHS[d.getMonth()];
+      const gMonthShort = (d: Date) => GREGORIAN_MONTHS[d.getMonth()].substring(0, 3);
+      const gDayFull = (d: Date) => `${d.getDate()} ${gMonthShort(d)}`;
+      const gMonthYearFull = (d: Date) => `${gMonthFull(d)} ${d.getFullYear()}`;
+      const gMonthYearShort = (d: Date) => `${gMonthShort(d)} ${d.getFullYear()}`;
+
       // Scale config based on zoom
       // Abbreviate texts specifically for tight width columns ("week" and "year" zooms)
       switch (settings.zoomLevel) {
         case "day":
           // Plenty of space (80px), use FULL names
           gantt.config.scales = [
-            { unit: "day", step: 1, format: isJalali ? jDayMonthFull : "%d %F" },
+            { unit: "day", step: 1, format: isJalali ? jDayMonthFull : gDayFull },
             { unit: "hour", step: 6, format: "%H:%i" },
           ];
           gantt.config.min_column_width = 80;
@@ -142,22 +168,26 @@ export default function GanttChart({ data, settings, onDataChange }: GanttChartP
           // Tight width (40px)
           gantt.config.scales = [
             { unit: "week", step: 1, format: settings.language === "fa" ? "هفته %W" : "Week %W" },
-            { unit: "day", step: 1, format: isJalali ? jDayMonthShort : "%d %b" },
+            {
+              unit: "day",
+              step: 1,
+              format: isJalali ? jDayMonthShort : (d: Date) => `${d.getDate()} ${gMonthShort(d)}`,
+            },
           ];
           gantt.config.min_column_width = 40;
           break;
         case "month":
           // Normal width (60px)
           gantt.config.scales = [
-            { unit: "month", step: 1, format: isJalali ? jMonthYearFull : "%F %Y" },
+            { unit: "month", step: 1, format: isJalali ? jMonthYearFull : gMonthYearFull },
             { unit: "week", step: 1, format: settings.language === "fa" ? "هفته %W" : "W%W" },
           ];
           gantt.config.min_column_width = 60;
           break;
         case "quarter":
           gantt.config.scales = [
-            { unit: "quarter", step: 1, format: isJalali ? jMonthYearFull : "%M %Y" },
-            { unit: "month", step: 1, format: isJalali ? jMonthName : "%F" },
+            { unit: "quarter", step: 1, format: isJalali ? jMonthYearFull : gMonthYearShort },
+            { unit: "month", step: 1, format: isJalali ? jMonthName : gMonthFull },
           ];
           gantt.config.min_column_width = 70;
           break;
@@ -165,7 +195,7 @@ export default function GanttChart({ data, settings, onDataChange }: GanttChartP
           // Tight width (50px)
           gantt.config.scales = [
             { unit: "year", step: 1, format: isJalali ? jYear : "%Y" },
-            { unit: "month", step: 1, format: isJalali ? jMonthNameShort : "%M" },
+            { unit: "month", step: 1, format: isJalali ? jMonthNameShort : gMonthShort },
           ];
           gantt.config.min_column_width = 50;
           break;
@@ -206,14 +236,23 @@ export default function GanttChart({ data, settings, onDataChange }: GanttChartP
       };
 
       // Tooltip localization template
+      // Note: .gantt_tooltip uses display:flex flex-direction:column, so use <div> per row (not <br>)
       gantt.templates.tooltip_text = function (start: Date, end: Date, task: any) {
         const tStart = gantt.templates.tooltip_date_format(start);
         const tEnd = gantt.templates.tooltip_date_format(end);
 
         if (settings.language === "fa") {
-          return `<b>فعالیت:</b> ${task.text}<br/><b>شروع:</b> ${tStart}<br/><b>پایان:</b> ${tEnd}`;
+          return [
+            `<div><b>فعالیت:</b> ${task.text}</div>`,
+            `<div><b>شروع:</b> ${tStart}</div>`,
+            `<div><b>پایان:</b> ${tEnd}</div>`,
+          ].join("");
         }
-        return `<b>Task:</b> ${task.text}<br/><b>Start:</b> ${tStart}<br/><b>End:</b> ${tEnd}`;
+        return [
+          `<div><b>Task:</b> ${task.text}</div>`,
+          `<div><b>Start:</b> ${tStart}</div>`,
+          `<div><b>End:</b> ${tEnd}</div>`,
+        ].join("");
       };
 
       // Locale labels
@@ -392,4 +431,6 @@ export default function GanttChart({ data, settings, onDataChange }: GanttChartP
       <div ref={containerRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );
-}
+});
+
+export default GanttChart;
