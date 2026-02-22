@@ -1,0 +1,213 @@
+/* ===== dhtmlxGantt Overrides for Dark Theme & RTL ===== */
+
+/* Container */
+.gantt_container {
+  background: var(--surface-bg) !important;
+  border: none !important;
+  font-family: inherit !important;
+}
+
+/* Grid */
+.gantt_grid {
+  background: var(--surface-card) !important;
+}
+
+.gantt_grid_head_cell {
+  background: var(--surface-elevated) !important;
+  color: var(--text-secondary) !important;
+  font-weight: 600 !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+  border-right: 1px solid var(--surface-border) !important;
+  font-size: 0.8rem !important;
+}
+
+.gantt_grid_data .gantt_cell {
+  color: var(--text-primary) !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+  border-right: 1px solid var(--surface-border) !important;
+  font-size: 0.8rem !important;
+}
+
+.gantt_row {
+  background: var(--surface-card) !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+}
+
+.gantt_row:hover,
+.gantt_row.odd:hover {
+  background: var(--surface-hover) !important;
+}
+
+.gantt_row.odd {
+  background: var(--surface-elevated) !important;
+}
+
+.gantt_row.gantt_selected {
+  background: rgba(67, 97, 238, 0.15) !important;
+}
+
+/* Scale */
+.gantt_scale_line {
+  background: var(--surface-elevated) !important;
+  border-bottom: 1px solid var(--surface-border) !important;
+}
+
+.gantt_scale_cell {
+  color: var(--text-secondary) !important;
+  border-right: 1px solid var(--surface-border) !important;
+  font-size: 0.75rem !important;
+}
+
+/* Task bar */
+.gantt_task_line {
+  border-radius: 4px !important;
+  border: none !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2) !important;
+}
+
+.gantt_task_line .gantt_task_content {
+  font-size: 0.75rem !important;
+  font-weight: 500 !important;
+}
+
+.gantt_task_progress {
+  border-radius: 4px 0 0 4px !important;
+  opacity: 0.6 !important;
+}
+
+/* Today marker */
+.gantt_marker {
+  background: var(--color-accent) !important;
+  opacity: 0.6 !important;
+}
+
+.gantt_marker .gantt_marker_content {
+  color: #fff !important;
+  font-size: 0.7rem !important;
+}
+
+/* Links */
+.gantt_task_link .gantt_line_wrapper div {
+  background: var(--text-muted) !important;
+}
+
+.gantt_task_link:hover .gantt_line_wrapper div {
+  background: var(--color-primary) !important;
+  box-shadow: 0 0 8px rgba(67, 97, 238, 0.5) !important;
+}
+
+.gantt_link_arrow {
+  border-color: var(--text-muted) !important;
+}
+
+/* Tree toggle */
+.gantt_tree_icon {
+  color: var(--text-secondary) !important;
+}
+
+/* Scrollbar area */
+.gantt_task .gantt_task_scale .gantt_scale_cell {
+  color: var(--text-secondary) !important;
+}
+
+.gantt_data_area {
+  background: var(--surface-bg) !important;
+}
+
+/* Grid divider */
+.gantt_layout_content {
+  border-color: var(--surface-border) !important;
+}
+
+.gantt_resizer {
+  background: var(--surface-border) !important;
+  width: 2px !important;
+}
+
+/* Lightbox */
+.gantt_cal_light {
+  background: var(--surface-card) !important;
+  border: 1px solid var(--surface-border-light) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  color: var(--text-primary) !important;
+  font-family: inherit !important;
+}
+
+.gantt_cal_light .gantt_cal_ltext textarea,
+.gantt_cal_light input {
+  background: var(--surface-elevated) !important;
+  border: 1px solid var(--surface-border-light) !important;
+  color: var(--text-primary) !important;
+  border-radius: var(--radius-sm) !important;
+  font-family: inherit !important;
+}
+
+.gantt_section_time {
+  background: transparent !important;
+}
+
+.gantt_cal_light .gantt_btn_set {
+  border-radius: var(--radius-sm) !important;
+}
+
+.gantt_cal_ltitle {
+  border-bottom: 1px solid var(--surface-border) !important;
+}
+
+.gantt_cal_ltitle span {
+  color: var(--text-primary) !important;
+}
+
+.gantt_section_title {
+  color: var(--text-secondary) !important;
+}
+
+/* Add button in grid */
+.gantt_add {
+  opacity: 0.5;
+  transition: opacity 0.2s;
+}
+
+.gantt_add:hover {
+  opacity: 1;
+}
+
+/* Milestone */
+.gantt_task_line.gantt_milestone .gantt_task_content {
+  border: none !important;
+}
+
+/* Project task */
+.gantt_task_line.gantt_project {
+  border-radius: 2px !important;
+}
+
+/* Typography Overrides */
+html[lang="fa"] .gantt_grid_head_cell,
+html[lang="fa"] .gantt_grid_data .gantt_cell,
+html[lang="fa"] .gantt_scale_cell,
+html[lang="fa"] .gantt_task_line .gantt_task_content,
+html[lang="fa"] .gantt_marker .gantt_marker_content,
+html[lang="fa"] .gantt_cal_light,
+html[lang="fa"] .gantt_cal_ltext textarea,
+html[lang="fa"] .gantt_cal_light input,
+html[lang="fa"] .gantt_tooltip,
+html[lang="fa"] .gantt_cal_ltitle span,
+html[lang="fa"] .gantt_btn {
+  font-family: var(--font-fa) !important;
+}
+
+html[lang="en"] .gantt_grid_head_cell,
+html[lang="en"] .gantt_grid_data .gantt_cell,
+html[lang="en"] .gantt_scale_cell,
+html[lang="en"] .gantt_task_line .gantt_task_content,
+html[lang="en"] .gantt_marker .gantt_marker_content,
+html[lang="en"] .gantt_cal_light,
+html[lang="en"] .gantt_cal_ltext textarea,
+html[lang="en"] .gantt_cal_light input,
+html[lang="en"] .gantt_tooltip,
+html[lang="en"] .gantt_cal_ltitle span,
+html[lang="en"] .gantt_btn {
+  font-family: var(--font-en) !important;
+}
