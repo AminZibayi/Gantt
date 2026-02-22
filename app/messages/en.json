@@ -59,7 +59,8 @@
     "description": "Edit all project data and settings as YAML",
     "apply": "Apply Changes",
     "reset": "Reset",
-    "error": "YAML Parse Error"
+    "error": "YAML Parse Error",
+    "success": "Changes applied successfully"
   },
   "colors": {
     "title": "Task Colors",

@@ -164,7 +164,7 @@ export default function GanttPage() {
             updateData(data);
             if (newSettings) updateSettings(newSettings);
             setShowYaml(false);
-            toast.success('Changes applied');
+            toast.success(t('yaml.success'));
           }}
           onClose={() => setShowYaml(false)}
         />
