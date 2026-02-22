@@ -66,7 +66,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
     ref,
     () => ({
       scrollToToday: () => {
-        if (ganttRef.current && initializedRef.current) {
+        if (ganttRef.current) {
           ganttRef.current.showDate(new Date(), "month");
         }
       },
@@ -152,6 +152,27 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       const gDayFull = (d: Date) => `${d.getDate()} ${gMonthShort(d)}`;
       const gMonthYearFull = (d: Date) => `${gMonthFull(d)} ${d.getFullYear()}`;
       const gMonthYearShort = (d: Date) => `${gMonthShort(d)} ${d.getFullYear()}`;
+      const gWeek = (d: Date) => {
+        const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
+        const dayNum = date.getUTCDay() || 7;
+        date.setUTCDate(date.getUTCDate() + 4 - dayNum);
+        const yearStart = new Date(Date.UTC(date.getUTCFullYear(), 0, 1));
+        return Math.ceil(((date.getTime() - yearStart.getTime()) / 86400000 + 1) / 7);
+      };
+      const jWeek = (d: Date) => {
+        const { jy } = jalaali.toJalaali(d.getFullYear(), d.getMonth() + 1, d.getDate());
+        const gStart = jalaali.toGregorian(jy, 1, 1);
+        const startDate = new Date(gStart.gy, gStart.gm - 1, gStart.gd);
+        const currentDate = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+        const dayOfYear = Math.floor((currentDate.getTime() - startDate.getTime()) / 86400000) + 1;
+        const startOffset = (startDate.getDay() + 1) % 7;
+        return Math.floor((dayOfYear + startOffset - 1) / 7) + 1;
+      };
+      const weekLabel = (d: Date, short = false) => {
+        const week = String(isJalali ? jWeek(d) : gWeek(d)).padStart(2, "0");
+        if (settings.language === "fa") return `هفته ${week}`;
+        return short ? `W${week}` : `Week ${week}`;
+      };
 
       // Scale config based on zoom
       // Abbreviate texts specifically for tight width columns ("week" and "year" zooms)
@@ -167,7 +188,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         case "week":
           // Tight width (40px)
           gantt.config.scales = [
-            { unit: "week", step: 1, format: settings.language === "fa" ? "هفته %W" : "Week %W" },
+            { unit: "week", step: 1, format: (d: Date) => weekLabel(d) },
             {
               unit: "day",
               step: 1,
@@ -180,7 +201,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
           // Normal width (60px)
           gantt.config.scales = [
             { unit: "month", step: 1, format: isJalali ? jMonthYearFull : gMonthYearFull },
-            { unit: "week", step: 1, format: settings.language === "fa" ? "هفته %W" : "W%W" },
+            { unit: "week", step: 1, format: (d: Date) => weekLabel(d, true) },
           ];
           gantt.config.min_column_width = 60;
           break;

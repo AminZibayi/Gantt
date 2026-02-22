@@ -277,10 +277,16 @@ html[lang="en"] .gantt_btn {
 
 /* ===== RTL scale header direction ===== */
 /* In RTL mode, force scale cell text to flow right-to-left (library doesn't do this by default) */
+.gantt_rtl .gantt_task_scale,
+.gantt_rtl .gantt_scale_line {
+  direction: rtl;
+  text-align: right;
+}
+
 .gantt_rtl .gantt_scale_cell {
   direction: rtl;
   unicode-bidi: embed;
-  text-align: center;
+  text-align: inherit;
 }
 /* NOTE: do NOT override gantt_grid_head_cell text-align in RTL —
    the library already handles alignment via direction:rtl on the container.
@@ -303,6 +309,10 @@ html[lang="fa"] .gantt_tooltip {
 
 .gantt_rtl .gantt_link_arrow_right {
   transform: rotate(180deg) !important;
+}
+
+.gantt_rtl .gantt_task_link .gantt_line_wrapper div {
+  transform-origin: right center;
 }
 
 /* ===== Light mode overrides ===== */

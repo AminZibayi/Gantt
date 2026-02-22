@@ -1,0 +1,246 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e7]: Gantt Chart
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - button "فارسی" [ref=e10] [cursor=pointer]
+        - button "English" [ref=e11] [cursor=pointer]
+      - button "Light Mode" [ref=e12] [cursor=pointer]:
+        - img [ref=e13]
+        - text: Light Mode
+      - button "Settings" [ref=e19] [cursor=pointer]:
+        - img [ref=e20]
+        - text: Settings
+  - generic [ref=e23]:
+    - button "Add Task" [ref=e25] [cursor=pointer]:
+      - img [ref=e26]
+      - text: Add Task
+    - generic [ref=e28]:
+      - button "Import" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - text: Import
+      - button "Export" [ref=e33] [cursor=pointer]:
+        - img [ref=e34]
+        - text: Export
+      - button "Print" [ref=e37] [cursor=pointer]:
+        - img [ref=e38]
+        - text: Print
+    - generic [ref=e43]:
+      - button "Zoom Out" [ref=e44] [cursor=pointer]:
+        - img [ref=e45]
+        - text: Zoom Out
+      - generic [ref=e48]: Month
+      - button "Zoom In" [ref=e49] [cursor=pointer]:
+        - img [ref=e50]
+        - text: Zoom In
+    - generic [ref=e54]:
+      - button "Expand All" [ref=e55] [cursor=pointer]:
+        - img [ref=e56]
+        - text: Expand All
+      - button "Collapse All" [ref=e59] [cursor=pointer]:
+        - img [ref=e60]
+        - text: Collapse All
+      - button "Today" [active] [ref=e63] [cursor=pointer]:
+        - img [ref=e64]
+        - text: Today
+  - generic [ref=e68]:
+    - generic [ref=e70]:
+      - treegrid [ref=e73]:
+        - row "Task Name Start Duration فعالیت جدید" [ref=e74]:
+          - columnheader "Task Name" [ref=e75]
+          - columnheader "Start" [ref=e76]
+          - columnheader "Duration" [ref=e77]
+          - columnheader "فعالیت جدید" [ref=e78] [cursor=pointer]: 
+        - rowgroup [ref=e79]:
+          - 'row "Task: پروژه نمونه Start: 2026-02-22 End: 2026-03-24" [expanded] [level=1] [ref=e80]':
+            - gridcell "پروژه نمونه" [ref=e81]:
+              - generic [ref=e82] [cursor=pointer]: 
+              - generic [ref=e83]: پروژه نمونه
+            - gridcell "2026-02-22" [ref=e84]:
+              - generic [ref=e85]: 2026-02-22
+            - gridcell "30" [ref=e86]:
+              - generic [ref=e87]: "30"
+            - gridcell "فعالیت جدید" [ref=e88]:
+              - button "فعالیت جدید" [ref=e89] [cursor=pointer]: 
+          - 'row "Task: فاز اول - برنامه‌ریزی Start: 2026-02-22 End: 2026-03-01" [expanded] [level=2] [ref=e90]':
+            - gridcell "فاز اول - برنامه‌ریزی" [ref=e91]:
+              - generic [ref=e93] [cursor=pointer]: 
+              - generic [ref=e94]: فاز اول - برنامه‌ریزی
+            - gridcell "2026-02-22" [ref=e95]:
+              - generic [ref=e96]: 2026-02-22
+            - gridcell "7" [ref=e97]:
+              - generic [ref=e98]: "7"
+            - gridcell "فعالیت جدید" [ref=e99]:
+              - button "فعالیت جدید" [ref=e100] [cursor=pointer]: 
+          - 'row "Task: تحلیل نیازمندی‌ها Start: 2026-02-22 End: 2026-02-25" [level=3] [ref=e101]':
+            - gridcell "تحلیل نیازمندی‌ها" [ref=e102]:
+              - generic [ref=e106]: تحلیل نیازمندی‌ها
+            - gridcell "2026-02-22" [ref=e107]:
+              - generic [ref=e108]: 2026-02-22
+            - gridcell "3" [ref=e109]:
+              - generic [ref=e110]: "3"
+            - gridcell "فعالیت جدید" [ref=e111]:
+              - button "فعالیت جدید" [ref=e112] [cursor=pointer]: 
+          - 'row "Task: طراحی معماری Start: 2026-02-25 End: 2026-03-01" [level=3] [ref=e113]':
+            - gridcell "طراحی معماری" [ref=e114]:
+              - generic [ref=e118]: طراحی معماری
+            - gridcell "2026-02-25" [ref=e119]:
+              - generic [ref=e120]: 2026-02-25
+            - gridcell "4" [ref=e121]:
+              - generic [ref=e122]: "4"
+            - gridcell "فعالیت جدید" [ref=e123]:
+              - button "فعالیت جدید" [ref=e124] [cursor=pointer]: 
+          - 'row "Task: فاز دوم - توسعه Start: 2026-03-01 End: 2026-03-15" [expanded] [level=2] [ref=e125]':
+            - gridcell "فاز دوم - توسعه" [ref=e126]:
+              - generic [ref=e128] [cursor=pointer]: 
+              - generic [ref=e129]: فاز دوم - توسعه
+            - gridcell "2026-03-01" [ref=e130]:
+              - generic [ref=e131]: 2026-03-01
+            - gridcell "14" [ref=e132]:
+              - generic [ref=e133]: "14"
+            - gridcell "فعالیت جدید" [ref=e134]:
+              - button "فعالیت جدید" [ref=e135] [cursor=pointer]: 
+          - 'row "Task: پیاده‌سازی رابط کاربری Start: 2026-03-01 End: 2026-03-08" [level=3] [ref=e136]':
+            - gridcell "پیاده‌سازی رابط کاربری" [ref=e137]:
+              - generic [ref=e141]: پیاده‌سازی رابط کاربری
+            - gridcell "2026-03-01" [ref=e142]:
+              - generic [ref=e143]: 2026-03-01
+            - gridcell "7" [ref=e144]:
+              - generic [ref=e145]: "7"
+            - gridcell "فعالیت جدید" [ref=e146]:
+              - button "فعالیت جدید" [ref=e147] [cursor=pointer]: 
+          - 'row "Task: پیاده‌سازی منطق Start: 2026-03-08 End: 2026-03-15" [level=3] [ref=e148]':
+            - gridcell "پیاده‌سازی منطق" [ref=e149]:
+              - generic [ref=e153]: پیاده‌سازی منطق
+            - gridcell "2026-03-08" [ref=e154]:
+              - generic [ref=e155]: 2026-03-08
+            - gridcell "7" [ref=e156]:
+              - generic [ref=e157]: "7"
+            - gridcell "فعالیت جدید" [ref=e158]:
+              - button "فعالیت جدید" [ref=e159] [cursor=pointer]: 
+          - 'row "Task: فاز سوم - آزمایش Start: 2026-03-15 End: 2026-03-22" [expanded] [level=2] [ref=e160]':
+            - gridcell "فاز سوم - آزمایش" [ref=e161]:
+              - generic [ref=e163] [cursor=pointer]: 
+              - generic [ref=e164]: فاز سوم - آزمایش
+            - gridcell "2026-03-15" [ref=e165]:
+              - generic [ref=e166]: 2026-03-15
+            - gridcell "7" [ref=e167]:
+              - generic [ref=e168]: "7"
+            - gridcell "فعالیت جدید" [ref=e169]:
+              - button "فعالیت جدید" [ref=e170] [cursor=pointer]: 
+          - 'row "Task: تست واحد Start: 2026-03-15 End: 2026-03-19" [level=3] [ref=e171]':
+            - gridcell "تست واحد" [ref=e172]:
+              - generic [ref=e176]: تست واحد
+            - gridcell "2026-03-15" [ref=e177]:
+              - generic [ref=e178]: 2026-03-15
+            - gridcell "4" [ref=e179]:
+              - generic [ref=e180]: "4"
+            - gridcell "فعالیت جدید" [ref=e181]:
+              - button "فعالیت جدید" [ref=e182] [cursor=pointer]: 
+          - 'row "Task: تحویل نهایی Start: 2026-03-22 End: 2026-03-23" [level=2] [ref=e183]':
+            - gridcell "تحویل نهایی" [ref=e184]:
+              - generic [ref=e187]: تحویل نهایی
+            - gridcell "2026-03-22" [ref=e188]:
+              - generic [ref=e189]: 2026-03-22
+            - gridcell "1" [ref=e190]:
+              - generic [ref=e191]: "1"
+            - gridcell "فعالیت جدید" [ref=e192]:
+              - button "فعالیت جدید" [ref=e193] [cursor=pointer]: 
+      - generic [ref=e196]:
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - generic "February 2026" [ref=e199]
+            - generic "March 2026" [ref=e200]
+            - generic "April 2026" [ref=e201]
+          - generic [ref=e202]:
+            - generic "W07" [ref=e203]
+            - generic "W08" [ref=e204]
+            - generic "W09" [ref=e205]
+            - generic "W10" [ref=e206]
+            - generic "W11" [ref=e207]
+            - generic "W12" [ref=e208]
+            - generic "W13" [ref=e209]
+            - generic "W14" [ref=e210]
+        - generic [ref=e211]:
+          - generic:
+            - img "ارتباط تحلیل نیازمندی‌ها (پایان) طراحی معماری (شروع)":
+              - generic [ref=e319] [cursor=pointer]: 
+            - img "ارتباط طراحی معماری (پایان) پیاده‌سازی رابط کاربری (شروع)":
+              - generic [ref=e336] [cursor=pointer]: 
+            - img "ارتباط پیاده‌سازی رابط کاربری (پایان) پیاده‌سازی منطق (شروع)":
+              - generic [ref=e353] [cursor=pointer]: 
+            - img "ارتباط پیاده‌سازی منطق (پایان) تست واحد (شروع)":
+              - generic [ref=e370] [cursor=pointer]: 
+            - img "ارتباط تست واحد (پایان) تحویل نهایی (شروع)":
+              - generic [ref=e385] [cursor=pointer]: 
+          - generic:
+            - 'img "Task: پروژه نمونه Start: 2026-02-22 End: 2026-03-24" [ref=e386]':
+              - generic [ref=e389] [cursor=pointer]: پروژه نمونه
+            - 'img "Task: فاز اول - برنامه‌ریزی Start: 2026-02-22 End: 2026-03-01" [ref=e392]':
+              - generic [ref=e395] [cursor=pointer]: فاز اول - برنامه‌ریزی
+            - 'img "Task: تحلیل نیازمندی‌ها Start: 2026-02-22 End: 2026-02-25" [ref=e398]':
+              - generic [ref=e401] [cursor=pointer]: تحلیل نیازمندی‌ها
+            - 'img "Task: طراحی معماری Start: 2026-02-25 End: 2026-03-01" [ref=e404]':
+              - generic [ref=e407] [cursor=pointer]: طراحی معماری
+            - 'img "Task: فاز دوم - توسعه Start: 2026-03-01 End: 2026-03-15" [ref=e410]':
+              - generic [ref=e413] [cursor=pointer]: فاز دوم - توسعه
+            - 'img "Task: پیاده‌سازی رابط کاربری Start: 2026-03-01 End: 2026-03-08" [ref=e416]':
+              - generic [ref=e419] [cursor=pointer]: پیاده‌سازی رابط کاربری
+            - 'img "Task: پیاده‌سازی منطق Start: 2026-03-08 End: 2026-03-15" [ref=e422]':
+              - generic [ref=e424] [cursor=pointer]: پیاده‌سازی منطق
+            - 'img "Task: فاز سوم - آزمایش Start: 2026-03-15 End: 2026-03-22" [ref=e427]':
+              - generic [ref=e429] [cursor=pointer]: فاز سوم - آزمایش
+            - 'img "Task: تست واحد Start: 2026-03-15 End: 2026-03-19" [ref=e432]':
+              - generic [ref=e434] [cursor=pointer]: تست واحد
+            - 'img "Task: تحویل نهایی Start: 2026-03-22 End: 2026-03-23" [ref=e437]':
+              - generic [ref=e439] [cursor=pointer]: تحویل نهایی
+          - generic:
+            - generic:
+              - generic [ref=e443]: Today
+              - generic [ref=e445]: امروز
+              - generic [ref=e447]: امروز
+              - generic [ref=e449]: Today
+    - iframe [ref=e450]:
+      
+  - generic [ref=e451]:
+    - generic [ref=e452]:
+      - heading "Settings" [level=3] [ref=e453]
+      - button [ref=e454] [cursor=pointer]:
+        - img [ref=e455]
+    - generic [ref=e458]:
+      - button "General" [ref=e459] [cursor=pointer]
+      - button "Branding" [ref=e460] [cursor=pointer]
+      - button "Data" [ref=e461] [cursor=pointer]
+      - button "Colors" [ref=e462] [cursor=pointer]
+    - generic [ref=e463]:
+      - generic [ref=e464]:
+        - generic [ref=e465]: Calendar
+        - combobox [ref=e466] [cursor=pointer]:
+          - option "Jalali (Shamsi)"
+          - option "Gregorian" [selected]
+      - generic [ref=e467]:
+        - generic [ref=e468]: Zoom Level
+        - combobox [ref=e469] [cursor=pointer]:
+          - option "Day"
+          - option "Week"
+          - option "Month" [selected]
+          - option "Quarter"
+          - option "Year"
+      - generic [ref=e471] [cursor=pointer]:
+        - checkbox "Progress" [checked] [ref=e472]
+        - text: Progress
+      - generic [ref=e474] [cursor=pointer]:
+        - checkbox "Link" [checked] [ref=e475]
+        - text: Link
+      - generic [ref=e477] [cursor=pointer]:
+        - checkbox "Today" [checked] [ref=e478]
+        - text: Today
+      - generic [ref=e480]:
+        - generic [ref=e481]: Save Config
+        - generic [ref=e482]:
+          - button "Save Config (YAML)" [ref=e483] [cursor=pointer]
+          - generic [ref=e484] [cursor=pointer]: Load Config
+```

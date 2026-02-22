@@ -1,0 +1,244 @@
+# Page snapshot
+
+```yaml
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e7]: Gantt Chart
+    - generic [ref=e8]:
+      - generic [ref=e9]:
+        - button "فارسی" [active] [ref=e10] [cursor=pointer]
+        - button "English" [ref=e11] [cursor=pointer]
+      - button "Light Mode" [ref=e12] [cursor=pointer]:
+        - img [ref=e13]
+        - text: Light Mode
+      - button "Settings" [ref=e19] [cursor=pointer]:
+        - img [ref=e20]
+        - text: Settings
+  - generic [ref=e23]:
+    - button "Add Task" [ref=e25] [cursor=pointer]:
+      - img [ref=e26]
+      - text: Add Task
+    - generic [ref=e28]:
+      - button "Import" [ref=e29] [cursor=pointer]:
+        - img [ref=e30]
+        - text: Import
+      - button "Export" [ref=e33] [cursor=pointer]:
+        - img [ref=e34]
+        - text: Export
+      - button "Print" [ref=e37] [cursor=pointer]:
+        - img [ref=e38]
+        - text: Print
+    - generic [ref=e43]:
+      - button "Zoom Out" [ref=e44] [cursor=pointer]:
+        - img [ref=e45]
+        - text: Zoom Out
+      - generic [ref=e48]: Month
+      - button "Zoom In" [ref=e49] [cursor=pointer]:
+        - img [ref=e50]
+        - text: Zoom In
+    - generic [ref=e54]:
+      - button "Expand All" [ref=e55] [cursor=pointer]:
+        - img [ref=e56]
+        - text: Expand All
+      - button "Collapse All" [ref=e59] [cursor=pointer]:
+        - img [ref=e60]
+        - text: Collapse All
+      - button "Today" [ref=e63] [cursor=pointer]:
+        - img [ref=e64]
+        - text: Today
+  - generic [ref=e68]:
+    - generic [ref=e70]:
+      - treegrid [ref=e73]:
+        - row "فعالیت جدید مدت شروع نام فعالیت" [ref=e74]:
+          - columnheader "فعالیت جدید" [ref=e75] [cursor=pointer]: 
+          - columnheader "مدت" [ref=e76]
+          - columnheader "شروع" [ref=e77]
+          - columnheader "نام فعالیت" [ref=e78]
+        - rowgroup [ref=e79]:
+          - 'row "فعالیت: پروژه نمونه شروع: 3 اسفند 1404 پایان: 4 فروردین 1405" [expanded] [level=1] [ref=e80]':
+            - gridcell "پروژه نمونه" [ref=e81]:
+              - generic [ref=e82] [cursor=pointer]: 
+              - generic [ref=e83]: پروژه نمونه
+            - gridcell "1404/12/03" [ref=e84]:
+              - generic [ref=e85]: 1404/12/03
+            - gridcell "30" [ref=e86]:
+              - generic [ref=e87]: "30"
+            - gridcell "فعالیت جدید" [ref=e88]:
+              - button "فعالیت جدید" [ref=e89] [cursor=pointer]: 
+          - 'row "فعالیت: فاز اول - برنامه‌ریزی شروع: 3 اسفند 1404 پایان: 10 اسفند 1404" [expanded] [level=2] [ref=e90]':
+            - gridcell "فاز اول - برنامه‌ریزی" [ref=e91]:
+              - generic [ref=e93] [cursor=pointer]: 
+              - generic [ref=e94]: فاز اول - برنامه‌ریزی
+            - gridcell "1404/12/03" [ref=e95]:
+              - generic [ref=e96]: 1404/12/03
+            - gridcell "7" [ref=e97]:
+              - generic [ref=e98]: "7"
+            - gridcell "فعالیت جدید" [ref=e99]:
+              - button "فعالیت جدید" [ref=e100] [cursor=pointer]: 
+          - 'row "فعالیت: تحلیل نیازمندی‌ها شروع: 3 اسفند 1404 پایان: 6 اسفند 1404" [level=3] [ref=e101]':
+            - gridcell "تحلیل نیازمندی‌ها" [ref=e102]:
+              - generic [ref=e106]: تحلیل نیازمندی‌ها
+            - gridcell "1404/12/03" [ref=e107]:
+              - generic [ref=e108]: 1404/12/03
+            - gridcell "3" [ref=e109]:
+              - generic [ref=e110]: "3"
+            - gridcell "فعالیت جدید" [ref=e111]:
+              - button "فعالیت جدید" [ref=e112] [cursor=pointer]: 
+          - 'row "فعالیت: طراحی معماری شروع: 6 اسفند 1404 پایان: 10 اسفند 1404" [level=3] [ref=e113]':
+            - gridcell "طراحی معماری" [ref=e114]:
+              - generic [ref=e118]: طراحی معماری
+            - gridcell "1404/12/06" [ref=e119]:
+              - generic [ref=e120]: 1404/12/06
+            - gridcell "4" [ref=e121]:
+              - generic [ref=e122]: "4"
+            - gridcell "فعالیت جدید" [ref=e123]:
+              - button "فعالیت جدید" [ref=e124] [cursor=pointer]: 
+          - 'row "فعالیت: فاز دوم - توسعه شروع: 10 اسفند 1404 پایان: 24 اسفند 1404" [expanded] [level=2] [ref=e125]':
+            - gridcell "فاز دوم - توسعه" [ref=e126]:
+              - generic [ref=e128] [cursor=pointer]: 
+              - generic [ref=e129]: فاز دوم - توسعه
+            - gridcell "1404/12/10" [ref=e130]:
+              - generic [ref=e131]: 1404/12/10
+            - gridcell "14" [ref=e132]:
+              - generic [ref=e133]: "14"
+            - gridcell "فعالیت جدید" [ref=e134]:
+              - button "فعالیت جدید" [ref=e135] [cursor=pointer]: 
+          - 'row "فعالیت: پیاده‌سازی رابط کاربری شروع: 10 اسفند 1404 پایان: 17 اسفند 1404" [level=3] [ref=e136]':
+            - gridcell "پیاده‌سازی رابط کاربری" [ref=e137]:
+              - generic [ref=e141]: پیاده‌سازی رابط کاربری
+            - gridcell "1404/12/10" [ref=e142]:
+              - generic [ref=e143]: 1404/12/10
+            - gridcell "7" [ref=e144]:
+              - generic [ref=e145]: "7"
+            - gridcell "فعالیت جدید" [ref=e146]:
+              - button "فعالیت جدید" [ref=e147] [cursor=pointer]: 
+          - 'row "فعالیت: پیاده‌سازی منطق شروع: 17 اسفند 1404 پایان: 24 اسفند 1404" [level=3] [ref=e148]':
+            - gridcell "پیاده‌سازی منطق" [ref=e149]:
+              - generic [ref=e153]: پیاده‌سازی منطق
+            - gridcell "1404/12/17" [ref=e154]:
+              - generic [ref=e155]: 1404/12/17
+            - gridcell "7" [ref=e156]:
+              - generic [ref=e157]: "7"
+            - gridcell "فعالیت جدید" [ref=e158]:
+              - button "فعالیت جدید" [ref=e159] [cursor=pointer]: 
+          - 'row "فعالیت: فاز سوم - آزمایش شروع: 24 اسفند 1404 پایان: 2 فروردین 1405" [expanded] [level=2] [ref=e160]':
+            - gridcell "فاز سوم - آزمایش" [ref=e161]:
+              - generic [ref=e163] [cursor=pointer]: 
+              - generic [ref=e164]: فاز سوم - آزمایش
+            - gridcell "1404/12/24" [ref=e165]:
+              - generic [ref=e166]: 1404/12/24
+            - gridcell "7" [ref=e167]:
+              - generic [ref=e168]: "7"
+            - gridcell "فعالیت جدید" [ref=e169]:
+              - button "فعالیت جدید" [ref=e170] [cursor=pointer]: 
+          - 'row "فعالیت: تست واحد شروع: 24 اسفند 1404 پایان: 28 اسفند 1404" [level=3] [ref=e171]':
+            - gridcell "تست واحد" [ref=e172]:
+              - generic [ref=e176]: تست واحد
+            - gridcell "1404/12/24" [ref=e177]:
+              - generic [ref=e178]: 1404/12/24
+            - gridcell "4" [ref=e179]:
+              - generic [ref=e180]: "4"
+            - gridcell "فعالیت جدید" [ref=e181]:
+              - button "فعالیت جدید" [ref=e182] [cursor=pointer]: 
+          - 'row "فعالیت: تحویل نهایی شروع: 2 فروردین 1405 پایان: 3 فروردین 1405" [level=2] [ref=e183]':
+            - gridcell "تحویل نهایی" [ref=e184]:
+              - generic [ref=e187]: تحویل نهایی
+            - gridcell "1405/01/02" [ref=e188]:
+              - generic [ref=e189]: 1405/01/02
+            - gridcell "1" [ref=e190]:
+              - generic [ref=e191]: "1"
+            - gridcell "فعالیت جدید" [ref=e192]:
+              - button "فعالیت جدید" [ref=e193] [cursor=pointer]: 
+      - generic [ref=e196]:
+        - generic [ref=e197]:
+          - generic [ref=e198]:
+            - generic "فروردین 1405" [ref=e199]
+            - generic "اسفند 1404" [ref=e200]
+            - generic "بهمن 1404" [ref=e201]
+          - generic [ref=e202]:
+            - generic "هفته 02" [ref=e203]
+            - generic "هفته 01" [ref=e204]
+            - generic "هفته 53" [ref=e205]
+            - generic "هفته 52" [ref=e206]
+            - generic "هفته 51" [ref=e207]
+            - generic "هفته 50" [ref=e208]
+            - generic "هفته 49" [ref=e209]
+            - generic "هفته 48" [ref=e210]
+        - generic [ref=e211]:
+          - generic:
+            - img "ارتباط تحلیل نیازمندی‌ها (پایان) طراحی معماری (شروع)":
+              - generic [ref=e319] [cursor=pointer]: 
+            - img "ارتباط طراحی معماری (پایان) پیاده‌سازی رابط کاربری (شروع)":
+              - generic [ref=e336] [cursor=pointer]: 
+            - img "ارتباط پیاده‌سازی رابط کاربری (پایان) پیاده‌سازی منطق (شروع)":
+              - generic [ref=e353] [cursor=pointer]: 
+            - img "ارتباط پیاده‌سازی منطق (پایان) تست واحد (شروع)":
+              - generic [ref=e370] [cursor=pointer]: 
+            - img "ارتباط تست واحد (پایان) تحویل نهایی (شروع)":
+              - generic [ref=e385] [cursor=pointer]: 
+          - generic:
+            - 'img "فعالیت: پروژه نمونه شروع: 3 اسفند 1404 پایان: 4 فروردین 1405" [ref=e386]':
+              - generic [ref=e389] [cursor=pointer]: پروژه نمونه
+            - 'img "فعالیت: فاز اول - برنامه‌ریزی شروع: 3 اسفند 1404 پایان: 10 اسفند 1404" [ref=e392]':
+              - generic [ref=e395] [cursor=pointer]: فاز اول - برنامه‌ریزی
+            - 'img "فعالیت: تحلیل نیازمندی‌ها شروع: 3 اسفند 1404 پایان: 6 اسفند 1404" [ref=e398]':
+              - generic [ref=e401] [cursor=pointer]: تحلیل نیازمندی‌ها
+            - 'img "فعالیت: طراحی معماری شروع: 6 اسفند 1404 پایان: 10 اسفند 1404" [ref=e404]':
+              - generic [ref=e407] [cursor=pointer]: طراحی معماری
+            - 'img "فعالیت: فاز دوم - توسعه شروع: 10 اسفند 1404 پایان: 24 اسفند 1404" [ref=e410]':
+              - generic [ref=e413] [cursor=pointer]: فاز دوم - توسعه
+            - 'img "فعالیت: پیاده‌سازی رابط کاربری شروع: 10 اسفند 1404 پایان: 17 اسفند 1404" [ref=e416]':
+              - generic [ref=e419] [cursor=pointer]: پیاده‌سازی رابط کاربری
+            - 'img "فعالیت: پیاده‌سازی منطق شروع: 17 اسفند 1404 پایان: 24 اسفند 1404" [ref=e422]':
+              - generic [ref=e424] [cursor=pointer]: پیاده‌سازی منطق
+            - 'img "فعالیت: فاز سوم - آزمایش شروع: 24 اسفند 1404 پایان: 2 فروردین 1405" [ref=e427]':
+              - generic [ref=e429] [cursor=pointer]: فاز سوم - آزمایش
+            - 'img "فعالیت: تست واحد شروع: 24 اسفند 1404 پایان: 28 اسفند 1404" [ref=e432]':
+              - generic [ref=e434] [cursor=pointer]: تست واحد
+            - 'img "فعالیت: تحویل نهایی شروع: 2 فروردین 1405 پایان: 3 فروردین 1405" [ref=e437]':
+              - generic [ref=e439] [cursor=pointer]: تحویل نهایی
+          - generic:
+            - generic:
+              - generic [ref=e443]: امروز
+              - generic [ref=e445]: امروز
+    - iframe [ref=e446]:
+      
+  - generic [ref=e447]:
+    - generic [ref=e448]:
+      - heading "Settings" [level=3] [ref=e449]
+      - button [ref=e450] [cursor=pointer]:
+        - img [ref=e451]
+    - generic [ref=e454]:
+      - button "General" [ref=e455] [cursor=pointer]
+      - button "Branding" [ref=e456] [cursor=pointer]
+      - button "Data" [ref=e457] [cursor=pointer]
+      - button "Colors" [ref=e458] [cursor=pointer]
+    - generic [ref=e459]:
+      - generic [ref=e460]:
+        - generic [ref=e461]: Calendar
+        - combobox [ref=e462] [cursor=pointer]:
+          - option "Jalali (Shamsi)" [selected]
+          - option "Gregorian"
+      - generic [ref=e463]:
+        - generic [ref=e464]: Zoom Level
+        - combobox [ref=e465] [cursor=pointer]:
+          - option "Day"
+          - option "Week"
+          - option "Month" [selected]
+          - option "Quarter"
+          - option "Year"
+      - generic [ref=e467] [cursor=pointer]:
+        - checkbox "Progress" [checked] [ref=e468]
+        - text: Progress
+      - generic [ref=e470] [cursor=pointer]:
+        - checkbox "Link" [checked] [ref=e471]
+        - text: Link
+      - generic [ref=e473] [cursor=pointer]:
+        - checkbox "Today" [checked] [ref=e474]
+        - text: Today
+      - generic [ref=e476]:
+        - generic [ref=e477]: Save Config
+        - generic [ref=e478]:
+          - button "Save Config (YAML)" [ref=e479] [cursor=pointer]
+          - generic [ref=e480] [cursor=pointer]: Load Config
+```

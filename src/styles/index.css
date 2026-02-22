@@ -303,6 +303,8 @@ html[dir="rtl"] body {
   align-items: center;
   padding: 0 var(--space-md);
   gap: var(--space-xs);
+  position: relative;
+  z-index: 101;
   overflow-x: auto;
 }
 
@@ -778,6 +780,7 @@ html[dir="rtl"] body {
   pointer-events: none;
   transition: opacity var(--transition-fast);
   box-shadow: var(--shadow-sm);
+  z-index: 1002;
 }
 
 .tooltip:hover::after {
