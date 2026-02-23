@@ -284,7 +284,12 @@ html[lang="en"] .gantt_btn {
 }
 
 /* Ensure Persian font formatting holds up even though direction is LTR */
-.gantt_rtl .gantt_scale_cell,
+.gantt_rtl .gantt_scale_cell {
+  text-align: center !important;
+  direction: rtl;
+  unicode-bidi: embed;
+}
+
 .gantt_rtl .gantt_task_content,
 .gantt_rtl .gantt_grid_data .gantt_cell {
   text-align: right;
@@ -293,14 +298,17 @@ html[lang="en"] .gantt_btn {
 }
 
 /* Fix Task Name (Tree Column) alignment:
-   It's a flex container. Since we're in LTR visually, 'row-reverse' makes
-   it start from the right, putting indents on the right as well. */
+   It needs display: flex for flex-direction to work. Since we're in LTR visually, 
+   'row-reverse' makes it start from the right, putting indents on the right as well. */
 .gantt_rtl .gantt_cell_tree {
-  flex-direction: row-reverse;
+  display: flex !important;
+  flex-direction: row-reverse !important;
+  justify-content: flex-start !important;
+  align-items: center;
 }
 
 .gantt_rtl .gantt_grid_head_cell {
-  text-align: center;
+  text-align: center !important;
   direction: rtl;
 }
 
