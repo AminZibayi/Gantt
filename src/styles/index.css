@@ -778,6 +778,7 @@ html[dir="rtl"] body {
   pointer-events: none;
   transition: opacity var(--transition-fast);
   box-shadow: var(--shadow-sm);
+  z-index: 1000;
 }
 
 .tooltip:hover::after {

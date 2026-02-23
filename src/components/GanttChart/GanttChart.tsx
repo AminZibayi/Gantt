@@ -67,7 +67,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
     () => ({
       scrollToToday: () => {
         if (ganttRef.current && initializedRef.current) {
-          ganttRef.current.showDate(new Date(), "month");
+          ganttRef.current.showDate(new Date());
         }
       },
     }),
@@ -101,8 +101,38 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       // RTL for Persian
       if (settings.language === "fa") {
         gantt.config.rtl = true;
+        // Since we force direction:ltr to fix the JS reversing logic,
+        // we must manually swap grid and timeline views!
+        gantt.config.layout = {
+          css: "gantt_container",
+          rows: [
+            {
+              cols: [
+                { view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer" },
+                { resizer: true, width: 1 },
+                { view: "grid", scrollX: "scrollHor", scrollY: "scrollVer" },
+                { view: "scrollbar", id: "scrollVer" },
+              ],
+            },
+            { view: "scrollbar", id: "scrollHor", height: 20 },
+          ],
+        };
       } else {
         gantt.config.rtl = false;
+        gantt.config.layout = {
+          css: "gantt_container",
+          rows: [
+            {
+              cols: [
+                { view: "grid", scrollX: "scrollHor", scrollY: "scrollVer" },
+                { resizer: true, width: 1 },
+                { view: "timeline", scrollX: "scrollHor", scrollY: "scrollVer" },
+                { view: "scrollbar", id: "scrollVer" },
+              ],
+            },
+            { view: "scrollbar", id: "scrollHor", height: 20 },
+          ],
+        };
       }
 
       // Grid columns
@@ -146,6 +176,21 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       const jMonthYearFull = (d: Date) => `${jMonthName(d)} ${jYear(d)}`;
       const jMonthYearShort = (d: Date) => `${jMonthNameShort(d)} ${jYear(d)}`;
 
+      const jWeekNum = (d: Date) => {
+        const { jy } = jalaali.toJalaali(d.getFullYear(), d.getMonth() + 1, d.getDate());
+        const firstDay = jalaali.toGregorian(jy, 1, 1);
+        const startOfYear = new Date(firstDay.gy, firstDay.gm - 1, firstDay.gd);
+        const dayOffset = (startOfYear.getDay() + 1) % 7;
+        // In local time, some days might be 23 hours or 25 hours due to daylight savings so use Math.round or similar.
+        // 86400000ms in a day. We use UTC to avoid DST issues if possible, but JS Date works with UTC representation here.
+        const diff = Math.round(
+          (Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()) -
+            Date.UTC(startOfYear.getFullYear(), startOfYear.getMonth(), startOfYear.getDate())) /
+            86400000
+        );
+        return Math.floor((diff + dayOffset) / 7) + 1;
+      };
+
       // Gregorian formatting helpers – always English months regardless of active locale
       const gMonthFull = (d: Date) => GREGORIAN_MONTHS[d.getMonth()];
       const gMonthShort = (d: Date) => GREGORIAN_MONTHS[d.getMonth()].substring(0, 3);
@@ -167,7 +212,14 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         case "week":
           // Tight width (40px)
           gantt.config.scales = [
-            { unit: "week", step: 1, format: settings.language === "fa" ? "هفته %W" : "Week %W" },
+            {
+              unit: "week",
+              step: 1,
+              format: (date: Date) => {
+                const num = isJalali ? jWeekNum(date) : gantt.date.date_to_str("%W")(date);
+                return settings.language === "fa" ? `هفته ${num}` : `Week ${num}`;
+              },
+            },
             {
               unit: "day",
               step: 1,
@@ -180,7 +232,14 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
           // Normal width (60px)
           gantt.config.scales = [
             { unit: "month", step: 1, format: isJalali ? jMonthYearFull : gMonthYearFull },
-            { unit: "week", step: 1, format: settings.language === "fa" ? "هفته %W" : "W%W" },
+            {
+              unit: "week",
+              step: 1,
+              format: (date: Date) => {
+                const num = isJalali ? jWeekNum(date) : gantt.date.date_to_str("%W")(date);
+                return settings.language === "fa" ? `هفته ${num}` : `W${num}`;
+              },
+            },
           ];
           gantt.config.min_column_width = 60;
           break;
