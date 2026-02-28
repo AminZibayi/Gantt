@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+build/
+
+# Prebuilt JS bundles (minified / generated files)
+codebase/dhtmlxgantt.js
+codebase/dhtmlxgantt.js.map
+codebase/dhtmlxgantt.es.js
+codebase/dhtmlxgantt.es.js.map
+codebase/sources/dhtmlxgantt.js
+codebase/sources/dhtmlxgantt.js.map
+codebase/sources/dhtmlxgantt.es.js
+codebase/sources/dhtmlxgantt.es.js.map
+
+# Prebuilt CSS
+codebase/dhtmlxgantt.css
+codebase/sources/dhtmlxgantt.css
+
+# Lock files
+pnpm-lock.yaml
+package-lock.json
+yarn.lock

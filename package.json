@@ -1,12 +1,12 @@
 {
-  "name": "dhtmlx-gantt",
-  "version": "9.1.1",
-  "description": "An open source JavaScript Gantt chart that helps you illustrate a project schedule in a nice-looking chart.",
+  "name": "@aminzibayi/gantt",
+  "version": "1.0.0",
+  "description": "An enterprise-grade, production-ready JavaScript Gantt chart library.",
   "main": "codebase/dhtmlxgantt.es.js",
   "types": "codebase/dhtmlxgantt.d.ts",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/DHTMLX/gantt.git"
+    "url": "git+https://github.com/AminZibayi/Gantt.git"
   },
   "keywords": [
     "gantt",
@@ -14,14 +14,34 @@
     "gantt chart",
     "calendar",
     "scheduler",
-    "dhtmlx",
-    "dhtmlxgantt",
     "timeline",
+    "project management",
     "browser"
   ],
-  "author": "DHTMLX",
+  "author": "AminZibayi",
+  "license": "GPL-2.0",
   "bugs": {
-    "url": "https://github.com/DHTMLX/gantt/issues"
+    "url": "https://github.com/AminZibayi/Gantt/issues"
   },
-  "homepage": "https://github.com/DHTMLX/gantt#readme"
+  "homepage": "https://github.com/AminZibayi/Gantt#readme",
+  "scripts": {
+    "lint:css": "stylelint \"codebase/sources/less/**/*.less\"",
+    "lint:css:fix": "stylelint \"codebase/sources/less/**/*.less\" --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^20.4.2",
+    "@commitlint/config-conventional": "^20.4.2",
+    "husky": "^9.1.7",
+    "lint-staged": "^16.2.7",
+    "prettier": "^3.8.1",
+    "stylelint": "^17.4.0",
+    "stylelint-config-standard-less": "^4.0.1",
+    "tailwindcss": "^4.2.1"
+  },
+  "lint-staged": {
+    "*.{js,ts,json,md,html,css,less}": "prettier --write"
+  }
 }

@@ -6,8 +6,7 @@
   border: 1px solid var(--dhx-gantt-base-colors-border);
   position: relative;
   white-space: nowrap;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow: hidden;
 }
 
 .gantt_touch_active {
@@ -21,8 +20,7 @@
 .gantt_task,
 .gantt_grid {
   position: relative;
-  overflow-x: hidden;
-  overflow-y: hidden;
+  overflow: hidden;
   display: inline-block;
   vertical-align: top;
 }
@@ -74,7 +72,6 @@
   clear: both;
 }
 
-
 .gantt_grid_data {
   width: 100%;
   overflow: hidden; // otherwise we can see it
@@ -118,10 +115,9 @@
 
 .gantt_task_row,
 .gantt_row {
-  border-bottom:var(--dhx-gantt-task-row-border);
+  border-bottom: var(--dhx-gantt-task-row-border);
   background: var(--dhx-gantt-task-row-background);
 }
-
 
 .gantt_row.odd,
 .gantt_task_row.odd {
@@ -199,7 +195,7 @@
   display: flex;
 }
 
-.gantt_row>div {
+.gantt_row > div {
   flex-shrink: 0;
   flex-grow: 0;
 }
@@ -255,14 +251,13 @@
   width: 0px;
   background-color: transparent;
   height: 1px;
-  overflow-x: hidden;
-  overflow-y: scroll;
+  overflow: hidden scroll;
   position: absolute;
   right: 0px;
   z-index: 1;
 }
 
-.gantt_ver_scroll>div {
+.gantt_ver_scroll > div {
   width: 1px;
   height: 1px;
 }
@@ -272,15 +267,14 @@
   background-color: transparent;
   width: 100%;
   clear: both;
-  overflow-x: scroll;
-  overflow-y: hidden;
+  overflow: scroll hidden;
 }
 
 .gantt_layout_cell .gantt_hor_scroll {
   position: absolute;
 }
 
-.gantt_hor_scroll>div {
+.gantt_hor_scroll > div {
   width: 5000px;
   height: 1px;
 }
@@ -376,7 +370,7 @@
 }
 
 .gantt_invalid {
-  background-color: #FFE0E0;
+  background-color: #ffe0e0;
 }
 
 .gantt_error {
