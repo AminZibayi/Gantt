@@ -324,7 +324,19 @@ html[lang="fa"] .gantt_tooltip {
 /* RTL link arrows: the library rotates left and right arrows internally,
    but we want them consistent with the flipped time flow. */
 /* If time goes Right-To-Left, a normal start-to-finish arrow goes LEFT. */
-/* Handled automatically by the library when config.rtl = true */
+/* We force a horizontal mirror on the entire SVG-like link geometry so it connects correctly 
+   to the start/end points of the flipped RTL bars. */
+html[lang="fa"] .gantt_task_link {
+  transform: scaleX(-1);
+  transform-origin: center;
+}
+
+/* Because the entire wrapper was horizontally mirrored above, the arrow (which natively pointed left)
+   now points right (against the RTL flow of time). We must mirror the arrow AGAIN to correct its direction. */
+html[lang="fa"] .gantt_task_link .gantt_link_arrow {
+  transform: scaleX(-1);
+  transform-origin: center;
+}
 
 /* ===== Light mode overrides ===== */
 [data-color-scheme="light"] .gantt_container {
