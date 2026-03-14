@@ -39,3 +39,4 @@ coverage/
 # Playwright
 .playwright-mcp
 dist-node/
+/test.xlsx
