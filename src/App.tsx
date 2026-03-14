@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "./components/Header/Header";
 import Toolbar from "./components/Toolbar/Toolbar";
@@ -26,14 +26,19 @@ export default function App() {
   const [showExport, setShowExport] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
 
-  // Sync language, direction, HTML attributes, and color scheme
   const currentLang = settings.language;
   const dir = currentLang === "fa" ? "rtl" : "ltr";
 
-  // Apply to document
-  document.documentElement.lang = currentLang;
-  document.documentElement.dir = dir;
-  document.documentElement.setAttribute("data-color-scheme", settings.colorScheme ?? "dark");
+  // Apply language and direction to document
+  useEffect(() => {
+    document.documentElement.lang = currentLang;
+    document.documentElement.dir = dir;
+  }, [currentLang, dir]);
+
+  // Apply color scheme to document
+  useEffect(() => {
+    document.documentElement.setAttribute("data-color-scheme", settings.colorScheme ?? "dark");
+  }, [settings.colorScheme]);
 
   const toggleLanguage = useCallback(() => {
     const newLang = currentLang === "fa" ? "en" : "fa";
@@ -47,14 +52,14 @@ export default function App() {
     (newData: GanttData) => {
       setData(newData);
     },
-    [setData]
+    [setData],
   );
 
   const handleImport = useCallback(
     (importedData: GanttData) => {
       importData(importedData);
     },
-    [importData]
+    [importData],
   );
 
   const handleAddTask = useCallback(() => {
@@ -110,13 +115,13 @@ export default function App() {
   }, []);
 
   return (
-    <div className='app-layout' dir={dir}>
+    <div className="app-layout" dir={dir}>
       {/* Print header for exported documents */}
-      <div className='print-header'>
-        {branding.logoUrl && <img src={branding.logoUrl} alt='Logo' className='print-header-logo' />}
+      <div className="print-header">
+        {branding.logoUrl && <img src={branding.logoUrl} alt="Logo" className="print-header-logo" />}
         <div>
-          <div className='print-header-title'>{branding.companyName || "Gantt Chart"}</div>
-          <div className='print-header-company'>
+          <div className="print-header-title">{branding.companyName || "Gantt Chart"}</div>
+          <div className="print-header-company">
             {new Date().toLocaleDateString(currentLang === "fa" ? "fa-IR" : "en-US")}
           </div>
         </div>
@@ -144,7 +149,7 @@ export default function App() {
         zoomLevel={settings.zoomLevel}
       />
 
-      <div className='app-main'>
+      <div className="app-main">
         <GanttChart
           key={`${settings.language}-${settings.calendar}-${settings.zoomLevel}`}
           ref={ganttChartRef}

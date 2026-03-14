@@ -2,7 +2,7 @@ import { useLocalStorage } from "./useLocalStorage";
 import type { BrandingConfig } from "../types";
 
 const defaultBranding: BrandingConfig = {
-  companyName: "",
+  companyName: "Gantt",
   logoUrl: "",
   primaryColor: "#4361ee",
   secondaryColor: "#3a0ca3",

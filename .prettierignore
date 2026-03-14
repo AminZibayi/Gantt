@@ -1,0 +1,5 @@
+dist/
+packages/dhtmlxgantt/dist/
+pnpm-lock.yaml
+coverage/
+node_modules/

@@ -6,8 +6,6 @@ import {
   FiPrinter,
   FiZoomIn,
   FiZoomOut,
-  FiMaximize2,
-  FiMinimize2,
   FiChevronsDown,
   FiChevronsUp,
   FiCalendar,
@@ -49,34 +47,35 @@ export default function Toolbar({
   };
 
   return (
-    <div className='app-toolbar'>
-      <div className='toolbar-group'>
-        <button className='btn btn-primary btn-sm' onClick={onAddTask}>
+    <div className="app-toolbar">
+      <div className="toolbar-group">
+        <button className="btn btn-primary btn-sm" onClick={onAddTask}>
           <FiPlus /> {t("toolbar.addTask")}
         </button>
       </div>
 
-      <div className='toolbar-separator' />
+      <div className="toolbar-separator" />
 
-      <div className='toolbar-group'>
-        <button className='btn btn-secondary btn-sm' onClick={onImport}>
+      <div className="toolbar-group">
+        <button className="btn btn-secondary btn-sm" onClick={onImport}>
           <FiUpload /> {t("toolbar.import")}
         </button>
-        <button className='btn btn-secondary btn-sm' onClick={onExport}>
+        <button className="btn btn-secondary btn-sm" onClick={onExport}>
           <FiDownload /> {t("toolbar.export")}
         </button>
-        <button className='btn btn-secondary btn-sm' onClick={onPrint}>
+        <button className="btn btn-secondary btn-sm" onClick={onPrint}>
           <FiPrinter /> {t("toolbar.print")}
         </button>
       </div>
 
-      <div className='toolbar-separator' />
+      <div className="toolbar-separator" />
 
-      <div className='toolbar-group'>
+      <div className="toolbar-group">
         <button
-          className='btn btn-ghost btn-icon btn-sm tooltip'
+          className="btn btn-ghost btn-icon btn-sm tooltip"
           data-tooltip={t("toolbar.zoomOut")}
-          onClick={onZoomOut}>
+          onClick={onZoomOut}
+        >
           <FiZoomOut />
         </button>
         <span
@@ -86,30 +85,33 @@ export default function Toolbar({
             padding: "0 4px",
             minWidth: "40px",
             textAlign: "center",
-          }}>
+          }}
+        >
           {zoomLabels[zoomLevel] || zoomLevel}
         </span>
-        <button className='btn btn-ghost btn-icon btn-sm tooltip' data-tooltip={t("toolbar.zoomIn")} onClick={onZoomIn}>
+        <button className="btn btn-ghost btn-icon btn-sm tooltip" data-tooltip={t("toolbar.zoomIn")} onClick={onZoomIn}>
           <FiZoomIn />
         </button>
       </div>
 
-      <div className='toolbar-separator' />
+      <div className="toolbar-separator" />
 
-      <div className='toolbar-group'>
+      <div className="toolbar-group">
         <button
-          className='btn btn-ghost btn-icon btn-sm tooltip'
+          className="btn btn-ghost btn-icon btn-sm tooltip"
           data-tooltip={t("toolbar.expandAll")}
-          onClick={onExpandAll}>
+          onClick={onExpandAll}
+        >
           <FiChevronsDown />
         </button>
         <button
-          className='btn btn-ghost btn-icon btn-sm tooltip'
+          className="btn btn-ghost btn-icon btn-sm tooltip"
           data-tooltip={t("toolbar.collapseAll")}
-          onClick={onCollapseAll}>
+          onClick={onCollapseAll}
+        >
           <FiChevronsUp />
         </button>
-        <button className='btn btn-ghost btn-sm' onClick={onToday}>
+        <button className="btn btn-ghost btn-sm" onClick={onToday}>
           <FiCalendar /> {t("toolbar.today")}
         </button>
       </div>
