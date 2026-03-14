@@ -7,20 +7,24 @@ node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.playwright-mcp
-
-# Dependency directories
 .pnpm-debug.log*
 
 # Build output
 dist/
 build/
+tsconfig.tsbuildinfo
+*.tsbuildinfo
+
+# Keep dhtmlxgantt library dist (not a build artifact)
+!packages/dhtmlxgantt/dist/
 
 # Optional npm cache
 .npm
 
 # dotenv environment variables
 .env
+.env.*
+*.local
 
 # IDE files
 .vscode/
@@ -28,3 +32,9 @@ build/
 # OS generated files
 .DS_Store
 Thumbs.db
+
+# Test coverage
+coverage/
+
+# Playwright
+.playwright-mcp

@@ -1,0 +1,8 @@
+{
+  "name": "@gantt/dhtmlxgantt",
+  "private": true,
+  "version": "9.1.1",
+  "license": "GPL-2.0",
+  "main": "dist/dhtmlxgantt.es.js",
+  "types": "index.d.ts"
+}
