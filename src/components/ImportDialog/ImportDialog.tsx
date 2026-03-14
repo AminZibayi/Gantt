@@ -35,7 +35,7 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
       }
       setLoading(false);
     },
-    [importFile, t]
+    [importFile, t],
   );
 
   const handleDrop = useCallback(
@@ -45,7 +45,7 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
       const file = e.dataTransfer.files[0];
       if (file) handleFile(file);
     },
-    [handleFile]
+    [handleFile],
   );
 
   const handleConfirm = () => {
@@ -60,16 +60,16 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
   const canImport = result && result.data.length > 0 && result.errors.length === 0;
 
   return (
-    <div className='modal-overlay' onClick={onClose}>
-      <div className='modal' style={{ width: "640px" }} onClick={(e) => e.stopPropagation()}>
-        <div className='modal-header'>
-          <h2 className='modal-title'>{t("import.title")}</h2>
-          <button className='btn btn-ghost btn-icon' onClick={onClose}>
+    <div className="modal-overlay" onClick={onClose}>
+      <div className="modal" style={{ width: "640px" }} onClick={(e) => e.stopPropagation()}>
+        <div className="modal-header">
+          <h2 className="modal-title">{t("import.title")}</h2>
+          <button className="btn btn-ghost btn-icon" onClick={onClose}>
             <FiX />
           </button>
         </div>
 
-        <div className='modal-body'>
+        <div className="modal-body">
           {!result && !loading && (
             <>
               <div
@@ -80,17 +80,18 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
                 }}
                 onDragLeave={() => setDragOver(false)}
                 onDrop={handleDrop}
-                onClick={() => fileInputRef.current?.click()}>
-                <div className='dropzone-icon'>
+                onClick={() => fileInputRef.current?.click()}
+              >
+                <div className="dropzone-icon">
                   <FiUploadCloud />
                 </div>
-                <div className='dropzone-text'>{t("import.dropzone")}</div>
-                <div className='dropzone-hint'>{t("import.supportedFormats")}</div>
+                <div className="dropzone-text">{t("import.dropzone")}</div>
+                <div className="dropzone-hint">{t("import.supportedFormats")}</div>
               </div>
               <input
                 ref={fileInputRef}
-                type='file'
-                accept='.xlsx,.xls,.csv'
+                type="file"
+                accept=".xlsx,.xls,.csv"
                 style={{ display: "none" }}
                 onChange={(e) => {
                   const file = e.target.files?.[0];
@@ -102,7 +103,7 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
 
           {loading && (
             <div style={{ textAlign: "center", padding: "var(--space-2xl)" }}>
-              <div className='spinner' style={{ margin: "0 auto var(--space-md)" }} />
+              <div className="spinner" style={{ margin: "0 auto var(--space-md)" }} />
               <div style={{ color: "var(--text-secondary)" }}>{t("import.importing")}</div>
             </div>
           )}
@@ -126,10 +127,11 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
                       marginBottom: "8px",
                       fontWeight: 600,
                       fontSize: "0.85rem",
-                    }}>
+                    }}
+                  >
                     <FiAlertCircle /> {t("import.validationErrors")} ({result.errors.length})
                   </div>
-                  <table className='validation-table'>
+                  <table className="validation-table">
                     <thead>
                       <tr>
                         <th>{t("validation.severity")}</th>
@@ -142,11 +144,11 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
                       {result.errors.map((err, i) => (
                         <tr key={i}>
                           <td>
-                            <span className='error-badge error'>خطا</span>
+                            <span className="error-badge error">{t("validation.error")}</span>
                           </td>
                           <td>{err.row || "-"}</td>
                           <td>{err.column || "-"}</td>
-                          <td className='validation-error'>
+                          <td className="validation-error">
                             {t(`validation.${err.message}`, {
                               column: err.column,
                               row: err.row,
@@ -173,10 +175,11 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
                       marginBottom: "8px",
                       fontWeight: 600,
                       fontSize: "0.85rem",
-                    }}>
+                    }}
+                  >
                     <FiAlertTriangle /> {t("validation.warning")} ({result.warnings.length})
                   </div>
-                  <table className='validation-table'>
+                  <table className="validation-table">
                     <thead>
                       <tr>
                         <th>{t("validation.severity")}</th>
@@ -189,11 +192,11 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
                       {result.warnings.map((w, i) => (
                         <tr key={i}>
                           <td>
-                            <span className='error-badge warning'>هشدار</span>
+                            <span className="error-badge warning">{t("validation.warning")}</span>
                           </td>
                           <td>{w.row || "-"}</td>
                           <td>{w.column || "-"}</td>
-                          <td className='validation-warning'>
+                          <td className="validation-warning">
                             {t(`validation.${w.message}`, {
                               column: w.column,
                               row: w.row,
@@ -217,11 +220,12 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
                       fontWeight: 600,
                       marginBottom: "8px",
                       color: "var(--text-secondary)",
-                    }}>
+                    }}
+                  >
                     {t("import.preview")}
                   </div>
-                  <div className='preview-table-wrapper'>
-                    <table className='preview-table'>
+                  <div className="preview-table-wrapper">
+                    <table className="preview-table">
                       <thead>
                         <tr>
                           <th>ID</th>
@@ -263,7 +267,8 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
                         color: "var(--text-muted)",
                         marginTop: "8px",
                         textAlign: "center",
-                      }}>
+                      }}
+                    >
                       ... و {result.data.length - 20} مورد دیگر
                     </div>
                   )}
@@ -273,12 +278,12 @@ export default function ImportDialog({ onClose, onImport }: ImportDialogProps) {
           )}
         </div>
 
-        <div className='modal-footer'>
-          <button className='btn btn-secondary' onClick={result ? () => setResult(null) : onClose}>
-            {result ? t("toolbar.import") + " ↩" : t("import.cancel")}
+        <div className="modal-footer">
+          <button className="btn btn-secondary" onClick={result ? () => setResult(null) : onClose}>
+            {result ? t("common.back") : t("import.cancel")}
           </button>
           {canImport && (
-            <button className='btn btn-primary' onClick={handleConfirm}>
+            <button className="btn btn-primary" onClick={handleConfirm}>
               <FiCheck /> {t("import.confirm")}
             </button>
           )}

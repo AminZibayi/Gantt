@@ -1,0 +1,31 @@
+{
+  "extends": ["stylelint-config-standard"],
+  "ignoreFiles": ["packages/dhtmlxgantt/**/*", "dist/**/*", "node_modules/**/*"],
+  "rules": {
+    "at-rule-no-unknown": [
+      true,
+      {
+        "ignoreAtRules": [
+          "theme",
+          "plugin",
+          "source",
+          "utility",
+          "variant",
+          "custom-variant",
+          "import",
+          "tailwind",
+          "apply",
+          "layer",
+          "config"
+        ]
+      }
+    ],
+    "import-notation": null,
+    "function-no-unknown": [
+      true,
+      {
+        "ignoreFunctions": ["theme"]
+      }
+    ]
+  }
+}

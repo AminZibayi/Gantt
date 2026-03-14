@@ -47,6 +47,7 @@
     "loadConfig": "Load Config",
     "saveConfig": "Save Config",
     "zoomLevel": "Zoom Level",
+    "showLinks": "Links",
     "day": "Day",
     "week": "Week",
     "month": "Month",
@@ -133,6 +134,7 @@
     "yes": "Yes",
     "no": "No",
     "search": "Search",
-    "filter": "Filter"
+    "filter": "Filter",
+    "back": "Back"
   }
 }

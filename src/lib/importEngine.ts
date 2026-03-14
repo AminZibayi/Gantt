@@ -6,8 +6,6 @@ import Papa from "papaparse";
 import jalaali from "jalaali-js";
 
 const REQUIRED_COLUMNS = ["text"];
-const DATE_COLUMNS = ["start_date", "end_date"];
-const NUMERIC_COLUMNS = ["duration", "progress", "id", "parent"];
 
 const COLUMN_ALIASES: Record<string, string[]> = {
   id: ["id", "شناسه", "row", "ردیف", "#"],
@@ -38,7 +36,7 @@ function parseDate(value: unknown): string | null {
   if (!str) return null;
 
   // Try Jalali yyyy/mm/dd or yyyy-mm-dd
-  const jalaliMatch = str.match(/^(\d{4})[\/\-](\d{1,2})[\/\-](\d{1,2})/);
+  const jalaliMatch = str.match(/^(\d{4})[/-](\d{1,2})[/-](\d{1,2})/);
   if (jalaliMatch) {
     const year = parseInt(jalaliMatch[1], 10);
     const month = parseInt(jalaliMatch[2], 10);
@@ -54,7 +52,7 @@ function parseDate(value: unknown): string | null {
   if (isoMatch) return `${isoMatch[1]}-${isoMatch[2].padStart(2, "0")}-${isoMatch[3].padStart(2, "0")}`;
 
   // Try dd/mm/yyyy or dd-mm-yyyy
-  const slashMatch = str.match(/^(\d{1,2})[\/\-](\d{1,2})[\/\-](\d{4})/);
+  const slashMatch = str.match(/^(\d{1,2})[/-](\d{1,2})[/-](\d{4})/);
   if (slashMatch) return `${slashMatch[3]}-${slashMatch[2].padStart(2, "0")}-${slashMatch[1].padStart(2, "0")}`;
 
   // Try Excel date serial
@@ -148,7 +146,6 @@ export function validateAndTransform(rows: Record<string, unknown>[]): ImportRes
 
   // Check we have at least start_date or duration
   const hasStartDate = mappedColNames.includes("start_date");
-  const hasDuration = mappedColNames.includes("duration");
   if (!hasStartDate) {
     warnings.push({
       message: "missingRequired",
@@ -200,7 +197,7 @@ export function validateAndTransform(rows: Record<string, unknown>[]): ImportRes
     const text = String(mapped.text || `Task ${id}`).trim();
 
     // Start date
-    let start_date = "";
+    let start_date: string;
     if (mapped.start_date) {
       const parsed = parseDate(mapped.start_date);
       if (parsed) {
