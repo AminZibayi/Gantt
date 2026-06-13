@@ -95,8 +95,8 @@ export async function exportToPDF(branding: BrandingConfig, options: ExportOptio
     orientation: isLandscape ? "landscape" : "portrait",
     unit: "mm",
     format: options.pageSize.toLowerCase() as "a4" | "a3",
+    compress: true,
   });
-
   const pw = pdf.internal.pageSize.getWidth();
   const ph = pdf.internal.pageSize.getHeight();
   const m = 10;
@@ -113,8 +113,8 @@ export async function exportToPDF(branding: BrandingConfig, options: ExportOptio
 
   const imgW = pw - m * 2;
   const imgH = (canvas.height * imgW) / canvas.width;
-  const imgData = canvas.toDataURL("image/png");
-  pdf.addImage(imgData, "PNG", m, y, imgW, Math.min(imgH, ph - y - m));
+  const imgData = canvas.toDataURL("image/jpeg", 0.7);
+  pdf.addImage(imgData, "JPEG", m, y, imgW, Math.min(imgH, ph - y - m), undefined, "FAST");
   pdf.save(options.fileName || "gantt-chart.pdf");
   } finally {
     // Restore original autosize config and re-render
