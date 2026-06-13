@@ -25,7 +25,37 @@ export default function App() {
   const [showImport, setShowImport] = useState(false);
   const [showExport, setShowExport] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
+  const [selectedTaskId, setSelectedTaskId] = useState<string | number | null>(null);
 
+  const handleDeleteTask = useCallback(() => {
+    if (selectedTaskId !== null) {
+      ganttChartRef.current?.deleteTask(selectedTaskId);
+    }
+  }, [selectedTaskId]);
+
+  const handleMoveTaskUp = useCallback(() => {
+    if (selectedTaskId !== null) {
+      ganttChartRef.current?.moveTaskUp(selectedTaskId);
+    }
+  }, [selectedTaskId]);
+
+  const handleMoveTaskDown = useCallback(() => {
+    if (selectedTaskId !== null) {
+      ganttChartRef.current?.moveTaskDown(selectedTaskId);
+    }
+  }, [selectedTaskId]);
+
+  const handleIndentTask = useCallback(() => {
+    if (selectedTaskId !== null) {
+      ganttChartRef.current?.indentTask(selectedTaskId);
+    }
+  }, [selectedTaskId]);
+
+  const handleOutdentTask = useCallback(() => {
+    if (selectedTaskId !== null) {
+      ganttChartRef.current?.outdentTask(selectedTaskId);
+    }
+  }, [selectedTaskId]);
   // Sync language, direction, HTML attributes, and color scheme
   const currentLang = settings.language;
   const dir = currentLang === "fa" ? "rtl" : "ltr";
@@ -142,6 +172,12 @@ export default function App() {
         onCollapseAll={handleCollapseAll}
         onToday={handleToday}
         zoomLevel={settings.zoomLevel}
+        selectedTaskId={selectedTaskId}
+        onDeleteTask={handleDeleteTask}
+        onMoveTaskUp={handleMoveTaskUp}
+        onMoveTaskDown={handleMoveTaskDown}
+        onIndentTask={handleIndentTask}
+        onOutdentTask={handleOutdentTask}
       />
 
       <div className='app-main'>
@@ -151,6 +187,7 @@ export default function App() {
           data={data}
           settings={settings}
           onDataChange={handleDataChange}
+          onSelectTask={setSelectedTaskId}
         />
       </div>
 

@@ -20,7 +20,12 @@
     "undo": "برگشت",
     "redo": "بازانجام",
     "today": "امروز",
-    "fitToScreen": "تنظیم اندازه"
+    "fitToScreen": "تنظیم اندازه",
+    "deleteTask": "حذف فعالیت",
+    "moveUp": "انتقال به بالا",
+    "moveDown": "انتقال به پایین",
+    "indent": "کاهش سطح",
+    "outdent": "افزایش سطح"
   },
   "settings": {
     "title": "تنظیمات",

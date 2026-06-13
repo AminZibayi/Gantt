@@ -8,6 +8,12 @@ import "../../styles/gantt-overrides.css";
 
 export interface GanttChartRef {
   scrollToToday: () => void;
+  deleteTask: (id: string | number) => void;
+  moveTaskUp: (id: string | number) => void;
+  moveTaskDown: (id: string | number) => void;
+  indentTask: (id: string | number) => void;
+  outdentTask: (id: string | number) => void;
+  getSelectedId: () => string | number | null;
 }
 
 // Persian month names for Jalali calendar
@@ -52,15 +58,17 @@ interface GanttChartProps {
   data: GanttData;
   settings: AppSettings;
   onDataChange: (data: GanttData) => void;
+  onSelectTask?: (id: string | number | null) => void;
 }
 
 const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChart(
-  { data, settings, onDataChange },
+  { data, settings, onDataChange, onSelectTask },
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
   const ganttRef = useRef<any>(null);
   const initializedRef = useRef(false);
+  const lastSerializedRef = useRef<string>("");
 
   useImperativeHandle(
     ref,
@@ -70,8 +78,113 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
           ganttRef.current.showDate(new Date());
         }
       },
+      deleteTask: (id: string | number) => {
+        if (ganttRef.current && initializedRef.current) {
+          const gantt = ganttRef.current;
+          if (gantt.isTaskExists(id)) {
+            gantt.deleteTask(id);
+          }
+        }
+      },
+      moveTaskUp: (id: string | number) => {
+        if (ganttRef.current && initializedRef.current) {
+          const gantt = ganttRef.current;
+          const task = gantt.getTask(id);
+          if (task) {
+            const parent = gantt.getParent(id);
+            const siblings = gantt.getChildren(parent);
+            const idx = siblings.indexOf(id);
+            if (idx > 0) {
+              gantt.moveTask(id, idx - 1, parent);
+              gantt.updateTask(id);
+              const currentData = {
+                data: gantt.serialize().data,
+                links: gantt.serialize().links,
+              };
+              lastSerializedRef.current = JSON.stringify(currentData);
+              onDataChange(currentData);
+            }
+          }
+        }
+      },
+      moveTaskDown: (id: string | number) => {
+        if (ganttRef.current && initializedRef.current) {
+          const gantt = ganttRef.current;
+          const task = gantt.getTask(id);
+          if (task) {
+            const parent = gantt.getParent(id);
+            const siblings = gantt.getChildren(parent);
+            const idx = siblings.indexOf(id);
+            if (idx >= 0 && idx < siblings.length - 1) {
+              gantt.moveTask(id, idx + 1, parent);
+              gantt.updateTask(id);
+              const currentData = {
+                data: gantt.serialize().data,
+                links: gantt.serialize().links,
+              };
+              lastSerializedRef.current = JSON.stringify(currentData);
+              onDataChange(currentData);
+            }
+          }
+        }
+      },
+      indentTask: (id: string | number) => {
+        if (ganttRef.current && initializedRef.current) {
+          const gantt = ganttRef.current;
+          const task = gantt.getTask(id);
+          if (task) {
+            const parent = gantt.getParent(id);
+            const siblings = gantt.getChildren(parent);
+            const idx = siblings.indexOf(id);
+            if (idx > 0) {
+              const prevSiblingId = siblings[idx - 1];
+              gantt.getTask(prevSiblingId).$open = true;
+              gantt.moveTask(id, -1, prevSiblingId);
+              gantt.updateTask(id);
+              gantt.updateTask(prevSiblingId);
+              const currentData = {
+                data: gantt.serialize().data,
+                links: gantt.serialize().links,
+              };
+              lastSerializedRef.current = JSON.stringify(currentData);
+              onDataChange(currentData);
+            }
+          }
+        }
+      },
+      outdentTask: (id: string | number) => {
+        if (ganttRef.current && initializedRef.current) {
+          const gantt = ganttRef.current;
+          const task = gantt.getTask(id);
+          if (task) {
+            const parentId = gantt.getParent(id);
+            if (parentId && parentId !== gantt.config.root_id) {
+              const grandparent = gantt.getParent(parentId);
+              const parentSiblings = gantt.getChildren(grandparent);
+              const parentIndex = parentSiblings.indexOf(parentId);
+              gantt.moveTask(id, parentIndex + 1, grandparent);
+              gantt.updateTask(id);
+              if (gantt.isTaskExists(parentId)) {
+                gantt.updateTask(parentId);
+              }
+              const currentData = {
+                data: gantt.serialize().data,
+                links: gantt.serialize().links,
+              };
+              lastSerializedRef.current = JSON.stringify(currentData);
+              onDataChange(currentData);
+            }
+          }
+        }
+      },
+      getSelectedId: () => {
+        if (ganttRef.current && initializedRef.current) {
+          return ganttRef.current.getSelectedId();
+        }
+        return null;
+      },
     }),
-    []
+    [onDataChange]
   );
 
   const configureGantt = useCallback(
@@ -99,6 +212,9 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       gantt.config.smart_scales = false;
       gantt.config.scroll_size = 8;
 
+      // Keyboard navigation configs
+      gantt.config.keyboard_navigation = true;
+      gantt.config.keyboard_navigation_cells = false;
       // RTL for Persian
       if (settings.language === "fa") {
         gantt.config.rtl = true;
@@ -410,6 +526,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         marker: true,
         tooltip: true,
         export_api: true,
+        keyboard_navigation: true,
       });
 
       configureGantt(gantt);
@@ -417,14 +534,25 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       // Initialize
       gantt.init(containerRef.current!);
       gantt.parse(data);
+      lastSerializedRef.current = JSON.stringify(data);
       initializedRef.current = true;
 
       // Event handlers
+      gantt.attachEvent("onTaskSelected", (id: string | number) => {
+        onSelectTask?.(id);
+      });
+
+      gantt.attachEvent("onTaskUnselected", (id: string | number) => {
+        if (!gantt.getSelectedId()) {
+          onSelectTask?.(null);
+        }
+      });
       gantt.attachEvent("onAfterTaskAdd", (_id: string, task: any) => {
         const currentData = {
           data: gantt.serialize().data,
           links: gantt.serialize().links,
         };
+        lastSerializedRef.current = JSON.stringify(currentData);
         onDataChange(currentData);
       });
 
@@ -433,6 +561,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
           data: gantt.serialize().data,
           links: gantt.serialize().links,
         };
+        lastSerializedRef.current = JSON.stringify(currentData);
         onDataChange(currentData);
       });
 
@@ -441,7 +570,9 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
           data: gantt.serialize().data,
           links: gantt.serialize().links,
         };
+        lastSerializedRef.current = JSON.stringify(currentData);
         onDataChange(currentData);
+        onSelectTask?.(null);
       });
 
       gantt.attachEvent("onAfterLinkAdd", (_id: string, link: any) => {
@@ -449,6 +580,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
           data: gantt.serialize().data,
           links: gantt.serialize().links,
         };
+        lastSerializedRef.current = JSON.stringify(currentData);
         onDataChange(currentData);
       });
 
@@ -457,6 +589,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
           data: gantt.serialize().data,
           links: gantt.serialize().links,
         };
+        lastSerializedRef.current = JSON.stringify(currentData);
         onDataChange(currentData);
       });
     };
@@ -482,8 +615,13 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
   useEffect(() => {
     if (!ganttRef.current || !initializedRef.current) return;
     const gantt = ganttRef.current;
+    const dataStr = JSON.stringify(data);
+    if (dataStr === lastSerializedRef.current) {
+      return;
+    }
     gantt.clearAll();
     gantt.parse(data);
+    lastSerializedRef.current = dataStr;
   }, [data]);
 
   return (

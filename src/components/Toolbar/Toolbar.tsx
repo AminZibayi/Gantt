@@ -11,6 +11,11 @@ import {
   FiChevronsDown,
   FiChevronsUp,
   FiCalendar,
+  FiTrash2,
+  FiArrowUp,
+  FiArrowDown,
+  FiChevronRight,
+  FiChevronLeft,
 } from "react-icons/fi";
 
 interface ToolbarProps {
@@ -24,8 +29,13 @@ interface ToolbarProps {
   onCollapseAll: () => void;
   onToday: () => void;
   zoomLevel: string;
+  selectedTaskId: string | number | null;
+  onDeleteTask: () => void;
+  onMoveTaskUp: () => void;
+  onMoveTaskDown: () => void;
+  onIndentTask: () => void;
+  onOutdentTask: () => void;
 }
-
 export default function Toolbar({
   onAddTask,
   onImport,
@@ -37,6 +47,12 @@ export default function Toolbar({
   onCollapseAll,
   onToday,
   zoomLevel,
+  selectedTaskId,
+  onDeleteTask,
+  onMoveTaskUp,
+  onMoveTaskDown,
+  onIndentTask,
+  onOutdentTask,
 }: ToolbarProps) {
   const { t } = useTranslation();
 
@@ -111,6 +127,46 @@ export default function Toolbar({
         </button>
         <button className='btn btn-ghost btn-sm' onClick={onToday}>
           <FiCalendar /> {t("toolbar.today")}
+        </button>
+      </div>
+
+      <div className='toolbar-separator' />
+      <div className='toolbar-group'>
+        <button
+          className='btn btn-ghost btn-icon btn-sm tooltip'
+          data-tooltip={t("toolbar.moveUp")}
+          disabled={!selectedTaskId}
+          onClick={onMoveTaskUp}>
+          <FiArrowUp />
+        </button>
+        <button
+          className='btn btn-ghost btn-icon btn-sm tooltip'
+          data-tooltip={t("toolbar.moveDown")}
+          disabled={!selectedTaskId}
+          onClick={onMoveTaskDown}>
+          <FiArrowDown />
+        </button>
+        <button
+          className='btn btn-ghost btn-icon btn-sm tooltip'
+          data-tooltip={t("toolbar.indent")}
+          disabled={!selectedTaskId}
+          onClick={onIndentTask}>
+          {t("dir") === "rtl" ? <FiChevronLeft /> : <FiChevronRight />}
+        </button>
+        <button
+          className='btn btn-ghost btn-icon btn-sm tooltip'
+          data-tooltip={t("toolbar.outdent")}
+          disabled={!selectedTaskId}
+          onClick={onOutdentTask}>
+          {t("dir") === "rtl" ? <FiChevronRight /> : <FiChevronLeft />}
+        </button>
+        <button
+          className='btn btn-ghost btn-icon btn-sm tooltip'
+          data-tooltip={t("toolbar.deleteTask")}
+          disabled={!selectedTaskId}
+          onClick={onDeleteTask}
+          style={{ color: !selectedTaskId ? "var(--text-muted)" : "var(--color-danger)" }}>
+          <FiTrash2 />
         </button>
       </div>
     </div>

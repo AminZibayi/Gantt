@@ -20,7 +20,12 @@
     "undo": "Undo",
     "redo": "Redo",
     "today": "Today",
-    "fitToScreen": "Fit to Screen"
+    "fitToScreen": "Fit to Screen",
+    "deleteTask": "Delete Task",
+    "moveUp": "Move Up",
+    "moveDown": "Move Down",
+    "indent": "Indent",
+    "outdent": "Outdent"
   },
   "settings": {
     "title": "Settings",
