@@ -73,8 +73,8 @@
   "export": {
     "title": "خروجی گرفتن",
     "format": "فرمت خروجی",
-    "pdf": "PDF (چاپ)",
-    "png": "PNG (تصویر)",
+    "pdf": "PDF",
+    "png": "PNG",
     "excel": "Excel",
     "csv": "CSV",
     "json": "JSON",
@@ -85,7 +85,8 @@
     "pageSize": "اندازه صفحه",
     "cancel": "لغو",
     "download": "دانلود",
-    "exporting": "در حال خروجی‌گرفتن..."
+    "exporting": "در حال خروجی‌گرفتن...",
+    "recommended": "پیشنهادی"
   },
   "validation": {
     "missingRequired": "ستون ضروری «{{column}}» یافت نشد",

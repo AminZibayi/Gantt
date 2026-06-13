@@ -21,7 +21,7 @@ const FORMAT_OPTIONS: { id: ExportFormat; icon: React.ReactNode }[] = [
 
 export default function ExportDialog({ data, branding, onClose }: ExportDialogProps) {
   const { t } = useTranslation();
-  const [format, setFormat] = useState<ExportFormat>("pdf");
+  const [format, setFormat] = useState<ExportFormat>("png");
   const [includeBranding, setIncludeBranding] = useState(true);
   const [orientation, setOrientation] = useState<"landscape" | "portrait">("landscape");
   const [pageSize, setPageSize] = useState<"A4" | "A3" | "Letter">("A4");
@@ -61,10 +61,15 @@ export default function ExportDialog({ data, branding, onClose }: ExportDialogPr
               {FORMAT_OPTIONS.map((opt) => (
                 <button
                   key={opt.id}
-                  className={`export-option ${format === opt.id ? "selected" : ""}`}
+                  className={`export-option ${format === opt.id ? "selected" : ""} ${
+                    opt.id === "png" ? "recommended" : ""
+                  }`}
                   onClick={() => setFormat(opt.id)}>
                   <span className='export-option-icon'>{opt.icon}</span>
                   <span className='export-option-label'>{t(`export.${opt.id}`)}</span>
+                  {opt.id === "png" && (
+                    <span className='export-recommend-badge'>{t("export.recommended")}</span>
+                  )}
                 </button>
               ))}
             </div>
