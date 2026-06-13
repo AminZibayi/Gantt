@@ -309,6 +309,11 @@ html[dir="rtl"] body {
   padding: 0 var(--space-md);
   gap: var(--space-xs);
   overflow-x: auto;
+  scrollbar-width: none; /* Hide scrollbar for Firefox */
+}
+
+.app-toolbar::-webkit-scrollbar {
+  display: none; /* Hide scrollbar for Chrome/Safari */
 }
 
 .toolbar-separator {
