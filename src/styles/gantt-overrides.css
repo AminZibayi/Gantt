@@ -129,6 +129,15 @@
   --dhx-gantt-link-background: var(--color-primary);
 }
 
+
+/* Make scrollbar tracks transparent so they blend into the container background */
+.gantt_task_vscroll,
+.gantt_ver_scroll,
+.gantt_hor_scroll,
+.gantt_layout_cell.gantt_ver_scroll,
+.gantt_layout_cell.gantt_hor_scroll {
+  background: transparent !important;
+}
 /* Legacy border-based arrows (kept for compatibility) */
 .gantt_link_arrow {
   border-color: var(--text-muted) !important;

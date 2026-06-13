@@ -97,6 +97,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       // Fix for RTL infinite scroll / blank canvas bug in dhtmlxgantt
       gantt.config.smart_rendering = false;
       gantt.config.smart_scales = false;
+      gantt.config.scroll_size = 8;
 
       // RTL for Persian
       if (settings.language === "fa") {
@@ -114,7 +115,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
                 { view: "scrollbar", id: "scrollVer" },
               ],
             },
-            { view: "scrollbar", id: "scrollHor", height: 20 },
+            { view: "scrollbar", id: "scrollHor" },
           ],
         };
       } else {
@@ -130,7 +131,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
                 { view: "scrollbar", id: "scrollVer" },
               ],
             },
-            { view: "scrollbar", id: "scrollHor", height: 20 },
+            { view: "scrollbar", id: "scrollHor" },
           ],
         };
       }
