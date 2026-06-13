@@ -308,12 +308,8 @@ html[dir="rtl"] body {
   align-items: center;
   padding: 0 var(--space-md);
   gap: var(--space-xs);
-  overflow-x: auto;
-  scrollbar-width: none; /* Hide scrollbar for Firefox */
-}
-
-.app-toolbar::-webkit-scrollbar {
-  display: none; /* Hide scrollbar for Chrome/Safari */
+  position: relative;
+  z-index: 10;
 }
 
 .toolbar-separator {
