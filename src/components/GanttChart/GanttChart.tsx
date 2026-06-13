@@ -9,11 +9,14 @@ import "../../styles/gantt-overrides.css";
 export interface GanttChartRef {
   scrollToToday: () => void;
   deleteTasks: (ids: (string | number)[]) => void;
+  deleteLinks: (ids: (string | number)[]) => void;
   moveTasksUp: (ids: (string | number)[]) => void;
   moveTasksDown: (ids: (string | number)[]) => void;
   indentTasks: (ids: (string | number)[]) => void;
   outdentTasks: (ids: (string | number)[]) => void;
   getSelectedIds: () => (string | number)[];
+  clearTaskSelection: () => void;
+  clearLinkSelection: () => void;
 }
 
 // Persian month names for Jalali calendar
@@ -59,10 +62,12 @@ interface GanttChartProps {
   settings: AppSettings;
   onDataChange: (data: GanttData) => void;
   onSelectTasks?: (ids: (string | number)[]) => void;
+  onSelectLinkClick?: (id: string | number | null, isCtrl: boolean) => void;
+  selectedLinkIds: (string | number)[];
 }
 
 const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChart(
-  { data, settings, onDataChange, onSelectTasks },
+  { data, settings, onDataChange, onSelectTasks, onSelectLinkClick, selectedLinkIds },
   ref
 ) {
   const containerRef = useRef<HTMLDivElement>(null);
@@ -86,6 +91,16 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
               if (gantt.isTaskExists(id)) {
                 gantt.deleteTask(id);
               }
+            });
+          });
+        }
+      },
+      deleteLinks: (ids: (string | number)[]) => {
+        if (ganttRef.current && initializedRef.current) {
+          const gantt = ganttRef.current;
+          gantt.batchUpdate(() => {
+            ids.forEach(id => {
+              gantt.deleteLink(id);
             });
           });
         }
@@ -211,6 +226,16 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         }
         return [];
       },
+      clearTaskSelection: () => {
+        if (ganttRef.current && initializedRef.current) {
+          ganttRef.current.unselectTask();
+        }
+      },
+      clearLinkSelection: () => {
+        if (ganttRef.current && initializedRef.current) {
+          ganttRef.current.render();
+        }
+      },
     }),
     [onDataChange]
   );
@@ -245,6 +270,27 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       gantt.config.keyboard_navigation_cells = false;
       gantt.config.multiselect = true;
       gantt.config.multiselect_one_level = false;
+      gantt.config.confirm_deleting = false;
+
+      // Override built-in delete confirmation to respect confirm_deleting config
+      gantt._delete_task_confirm = function (config: { callback: () => void }) {
+        if (!gantt.config.confirm_deleting) {
+          config.callback();
+        } else {
+          gantt._simple_confirm(
+            gantt.locale.labels.confirm_deleting,
+            gantt.locale.labels.confirm_deleting_title,
+            config.callback
+          );
+        }
+      };
+      // Highlight selected links (arrows)
+      gantt.templates.link_class = (link: any) => {
+        if (selectedLinkIds && selectedLinkIds.includes(link.id)) {
+          return "selected-link";
+        }
+        return "";
+      };
       if (settings.language === "fa") {
         gantt.config.rtl = true;
         // Since we force direction:ltr to fix the JS reversing logic,
@@ -532,7 +578,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         });
       }
     },
-    [settings]
+    [settings, selectedLinkIds]
   );
 
   // Initialize gantt
@@ -575,6 +621,21 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       };
 
       // Event handlers
+      gantt.attachEvent("onLinkClick", (id: string | number) => {
+        const e = (window.event as MouseEvent) || ({} as any);
+        const isCtrl = e.ctrlKey || e.metaKey || e.shiftKey;
+        onSelectLinkClick?.(id, isCtrl);
+      });
+
+      gantt.attachEvent("onTaskClick", (id: string | number) => {
+        onSelectLinkClick?.(null, false);
+        return true;
+      });
+
+      gantt.attachEvent("onEmptyClick", () => {
+        gantt.unselectTask();
+        onSelectLinkClick?.(null, false);
+      });
       gantt.attachEvent("onTaskSelected", () => {
         updateSelection();
       });
@@ -626,6 +687,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         };
         lastSerializedRef.current = JSON.stringify(currentData);
         onDataChange(currentData);
+        onSelectLinkClick?.(null, false);
       });
     };
 

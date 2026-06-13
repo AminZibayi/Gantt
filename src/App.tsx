@@ -1,4 +1,4 @@
-import { useState, useCallback, useRef } from "react";
+import { useState, useCallback, useRef, useEffect } from "react";
 import { useTranslation } from "react-i18next";
 import Header from "./components/Header/Header";
 import Toolbar from "./components/Toolbar/Toolbar";
@@ -26,12 +26,36 @@ export default function App() {
   const [showExport, setShowExport] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
   const [selectedTaskIds, setSelectedTaskIds] = useState<(string | number)[]>([]);
+  const [selectedLinkIds, setSelectedLinkIds] = useState<(string | number)[]>([]);
+
+  const handleSelectLinkClick = useCallback((id: string | number | null, isCtrl: boolean) => {
+    if (id === null) {
+      setSelectedLinkIds([]);
+    } else {
+      setSelectedLinkIds(prev => {
+        if (isCtrl) {
+          if (prev.includes(id)) {
+            return prev.filter(x => x !== id);
+          } else {
+            return [...prev, id];
+          }
+        } else {
+          return [id];
+        }
+      });
+      // Clear task selection
+      setSelectedTaskIds([]);
+      ganttChartRef.current?.clearTaskSelection();
+    }
+  }, []);
 
   const handleDeleteTask = useCallback(() => {
     if (selectedTaskIds.length > 0) {
       ganttChartRef.current?.deleteTasks(selectedTaskIds);
+    } else if (selectedLinkIds.length > 0) {
+      ganttChartRef.current?.deleteLinks(selectedLinkIds);
     }
-  }, [selectedTaskIds]);
+  }, [selectedTaskIds, selectedLinkIds]);
 
   const handleMoveTaskUp = useCallback(() => {
     if (selectedTaskIds.length > 0) {
@@ -56,6 +80,30 @@ export default function App() {
       ganttChartRef.current?.outdentTasks(selectedTaskIds);
     }
   }, [selectedTaskIds]);
+  // Handle global Delete/Backspace key to delete selected tasks or links
+  useEffect(() => {
+    const handleGlobalKeyDown = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      if (e.key === "Delete" || e.key === "Backspace") {
+        if (selectedTaskIds.length > 0 || selectedLinkIds.length > 0) {
+          e.preventDefault();
+          handleDeleteTask();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleGlobalKeyDown);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+  }, [selectedTaskIds, selectedLinkIds, handleDeleteTask]);
+
   // Sync language, direction, HTML attributes, and color scheme
   const currentLang = settings.language;
   const dir = currentLang === "fa" ? "rtl" : "ltr";
@@ -172,7 +220,7 @@ export default function App() {
         onCollapseAll={handleCollapseAll}
         onToday={handleToday}
         zoomLevel={settings.zoomLevel}
-        selectedTaskId={selectedTaskIds.length > 0 ? selectedTaskIds[0] : null}
+        selectedTaskId={selectedTaskIds.length > 0 ? selectedTaskIds[0] : (selectedLinkIds.length > 0 ? selectedLinkIds[0] : null)}
         onDeleteTask={handleDeleteTask}
         onMoveTaskUp={handleMoveTaskUp}
         onMoveTaskDown={handleMoveTaskDown}
@@ -188,6 +236,8 @@ export default function App() {
           settings={settings}
           onDataChange={handleDataChange}
           onSelectTasks={setSelectedTaskIds}
+          onSelectLinkClick={handleSelectLinkClick}
+          selectedLinkIds={selectedLinkIds}
         />
       </div>
 

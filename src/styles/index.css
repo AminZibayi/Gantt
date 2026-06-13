@@ -954,3 +954,15 @@ html[dir="rtl"] body {
   border-bottom: 1px solid var(--surface-border);
   white-space: nowrap;
 }
+
+/* Highlight selected links (arrows) */
+.selected-link .gantt_line_wrapper div {
+  background-color: var(--color-danger) !important;
+  box-shadow: 0 0 5px var(--color-danger);
+}
+.selected-link .gantt_link_arrow {
+  border-left-color: var(--color-danger) !important;
+  border-right-color: var(--color-danger) !important;
+  border-top-color: var(--color-danger) !important;
+  border-bottom-color: var(--color-danger) !important;
+}
