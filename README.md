@@ -143,3 +143,57 @@ Read us on [Medium](https://medium.com/@dhtmlx) :newspaper:
 Follow us on [Twitter](https://twitter.com/dhtmlx) :bird:
 
 Like our page on [Facebook](https://www.facebook.com/dhtmlx/) :thumbsup:
+
+---
+
+## 🚀 Application Options & Usage Guide
+
+This customized Gantt Chart application includes advanced features for task management, view configuration, keyboard navigation, and file exports.
+
+### ⌨️ Keyboard Shortcuts & Options
+The application has built-in keyboard navigation support. Select a task and use the following shortcuts:
+
+| Shortcut | Description |
+| --- | --- |
+| `Arrow Up` / `Arrow Down` | Navigate focus through task rows |
+| `Space` | Select or deselect the currently focused task |
+| `Ctrl + Click` / `Shift + Click` | Hold `Ctrl` (or `Cmd` on macOS) / `Shift` to select multiple tasks |
+| `Delete` / `Backspace` | Delete all selected tasks |
+| `Enter` | Open the task detail/edit modal (Lightbox) |
+| `Ctrl + Enter` | Create a new subtask under the selected task |
+| `Shift + Right` / `Tab` | **Indent**: Demote selected task(s) to be a child of their predecessor sibling |
+| `Shift + Left` / `Shift + Tab` | **Outdent**: Promote selected task(s) to a parent level |
+| `Shift + Down` | Expand the selected task's branch |
+| `Shift + Up` | Collapse the selected task's branch |
+| `Ctrl + Right` | Expand selected task |
+| `Ctrl + Left` | Collapse selected task |
+| `Ctrl + Z` | Undo the last action |
+| `Ctrl + Y` | Redo the last action |
+
+---
+
+### 🛠️ Toolbar Options
+The main toolbar offers visual control over the project chart:
+
+* **Add Task (`+`)**: Inserts a new task at the project root level.
+* **Import**: Import project schedule data from CSV or Excel formats.
+* **Export**: Export the chart layout to PNG (Recommended) or PDF files (fully captures off-screen timeline layout).
+* **Print**: Initiates the browser print dialog optimized for Gantt scales.
+* **Zoom Out / Zoom In**: Adjust scale units (`Day`, `Week`, `Month`, `Quarter`, `Year`).
+* **Expand All / Collapse All**: Batch expand/collapse all hierarchy branches.
+* **Today**: Automatically scroll and center the timescale to the current date.
+* **Move Up / Move Down**: Move the selected task(s) vertically within their level.
+* **Indent / Outdent**: Alter task hierarchy level visually.
+* **Delete Task**: Permanently remove all selected tasks.
+
+---
+
+### ⚙️ View & Settings Panel Options
+Click the **Gear Icon** in the top right to customize:
+* **Progress**: Toggle visibility of progress completion percentages on task bars.
+* **Links**: Toggle task dependency line rendering.
+* **Today**: Show or hide the red "Today" vertical marker.
+* **Language/Locale**: Toggle between English (Gregorian Calendar / LTR) and Persian (Jalali Calendar / RTL).
+* **Color Scheme**: Toggle between Light Mode and Dark Mode.
+* **Branding**: Customize company logo, colors, and header titles.
+* **Data Management**: View and modify raw YAML configuration and data structures.
