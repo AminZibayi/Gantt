@@ -1,4 +1,4 @@
-import html2canvas from "html2canvas";
+import { snapdom } from "@zumer/snapdom";
 import jsPDF from "jspdf";
 import * as XLSX from "xlsx";
 import * as yaml from "js-yaml";
@@ -8,17 +8,34 @@ function getGanttElement(): HTMLElement | null {
   return document.querySelector(".gantt_container") || document.getElementById("gantt-area");
 }
 
+async function getGanttInstance(): Promise<any> {
+  const ganttModule = await import("../../codebase/dhtmlxgantt.es.js");
+  return ganttModule.default || ganttModule.gantt || (window as any).gantt;
+}
+
 export async function exportToPNG(branding: BrandingConfig, options: ExportOptions): Promise<void> {
   const el = getGanttElement();
   if (!el) return;
 
-  const canvas = await html2canvas(el, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#0f1117",
-    logging: false,
-  });
+  const gantt = await getGanttInstance();
+  const originalAutosize = gantt.config.autosize;
 
+  // Set autosize to "xy" to render the full chart
+  gantt.config.autosize = "xy";
+  gantt.render();
+
+  // Wait for the browser to settle the layout
+  if (typeof window !== "undefined" && typeof window.requestAnimationFrame !== "undefined") {
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+
+  try {
+    const canvas = await snapdom.toCanvas(el, {
+      scale: 2,
+      backgroundColor: "#0f1117",
+    });
   if (options.includeBranding && branding.companyName) {
     const headerH = 120;
     const nc = document.createElement("canvas");
@@ -36,6 +53,11 @@ export async function exportToPNG(branding: BrandingConfig, options: ExportOptio
   } else {
     downloadCanvas(canvas, options.fileName || "gantt-chart.png");
   }
+  } finally {
+    // Restore original autosize config and re-render
+    gantt.config.autosize = originalAutosize;
+    gantt.render();
+  }
 }
 
 function downloadCanvas(canvas: HTMLCanvasElement, fileName: string) {
@@ -49,13 +71,25 @@ export async function exportToPDF(branding: BrandingConfig, options: ExportOptio
   const el = getGanttElement();
   if (!el) return;
 
-  const canvas = await html2canvas(el, {
-    scale: 2,
-    useCORS: true,
-    backgroundColor: "#ffffff",
-    logging: false,
-  });
+  const gantt = await getGanttInstance();
+  const originalAutosize = gantt.config.autosize;
 
+  // Set autosize to "xy" to render the full chart
+  gantt.config.autosize = "xy";
+  gantt.render();
+
+  // Wait for the browser to settle the layout
+  if (typeof window !== "undefined" && typeof window.requestAnimationFrame !== "undefined") {
+    await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  } else {
+    await new Promise((resolve) => setTimeout(resolve, 50));
+  }
+
+  try {
+    const canvas = await snapdom.toCanvas(el, {
+      scale: 2,
+      backgroundColor: "#ffffff",
+    });
   const isLandscape = options.orientation === "landscape";
   const pdf = new jsPDF({
     orientation: isLandscape ? "landscape" : "portrait",
@@ -82,6 +116,11 @@ export async function exportToPDF(branding: BrandingConfig, options: ExportOptio
   const imgData = canvas.toDataURL("image/png");
   pdf.addImage(imgData, "PNG", m, y, imgW, Math.min(imgH, ph - y - m));
   pdf.save(options.fileName || "gantt-chart.pdf");
+  } finally {
+    // Restore original autosize config and re-render
+    gantt.config.autosize = originalAutosize;
+    gantt.render();
+  }
 }
 
 export function exportToExcel(data: GanttData, fileName?: string) {
