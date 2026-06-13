@@ -272,6 +272,16 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       gantt.config.multiselect_one_level = false;
       gantt.config.confirm_deleting = false;
 
+      // Remove built-in delete shortcuts so they don't delete focused tasks that aren't selected
+      if (gantt.removeShortcut) {
+        gantt.removeShortcut("delete", "taskRow");
+        gantt.removeShortcut("delete", "grid");
+        gantt.removeShortcut("del", "taskRow");
+        gantt.removeShortcut("del", "grid");
+        gantt.removeShortcut("delete");
+        gantt.removeShortcut("del");
+      }
+
       // Override built-in delete confirmation to respect confirm_deleting config
       gantt._delete_task_confirm = function (config: { callback: () => void }) {
         if (!gantt.config.confirm_deleting) {
