@@ -396,7 +396,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
     // Dynamically import gantt from local codebase
     const initGantt = async () => {
       const ganttModule = await import("../../../codebase/dhtmlxgantt.es.js");
-      const gantt = ganttModule.default || ganttModule.gantt || (window as any).gantt;
+      const gantt: any = ganttModule.default || ganttModule.gantt || (window as any).gantt;
 
       if (!gantt) {
         console.error("Failed to load dhtmlxgantt");
