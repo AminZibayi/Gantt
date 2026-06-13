@@ -770,7 +770,7 @@ html[dir="rtl"] body {
 .tooltip::after {
   content: attr(data-tooltip);
   position: absolute;
-  bottom: 100%;
+  top: calc(100% + 6px);
   left: 50%;
   transform: translateX(-50%);
   padding: 4px 8px;
@@ -787,6 +787,9 @@ html[dir="rtl"] body {
 }
 
 .tooltip:hover::after {
+  opacity: 1;
+}
+.tooltip.tooltip-hover-state::after {
   opacity: 1;
 }
 
