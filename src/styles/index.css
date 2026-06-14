@@ -733,6 +733,101 @@ html[dir="rtl"] body {
   border-color: var(--color-primary);
 }
 
+/* ===== CodeMirror Editor (YAML/JSON) ===== */
+.code-editor.cm-editor {
+  padding: 0;
+  background: var(--surface-elevated);
+  border: 1px solid var(--surface-border-light);
+}
+
+.code-editor.cm-editor.cm-focused {
+  border-color: var(--color-primary);
+}
+
+.code-editor .cm-content {
+  padding: var(--space-md);
+  font-size: 0.8rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  font-family: var(--font-mono);
+}
+
+.code-editor .cm-gutters {
+  background: var(--surface-elevated);
+  border-right: 1px solid var(--surface-border-light);
+  color: var(--text-muted);
+  padding: var(--space-md) var(--space-sm);
+  font-size: 0.7rem;
+}
+
+.code-editor .cm-activeLineGutter {
+  background: rgba(99, 102, 241, 0.1);
+}
+
+.code-editor .cm-activeLine {
+  background: rgba(99, 102, 241, 0.05);
+}
+
+.code-editor .cm-selectionBackground {
+  background: rgba(99, 102, 241, 0.3);
+}
+
+.code-editor .cm-cursor {
+  border-left-color: var(--text-primary);
+  border-left-width: 2px;
+}
+
+/* Light mode adjustments */
+[data-color-scheme="light"] .code-editor.cm-editor {
+  background: var(--surface-elevated);
+  border-color: var(--surface-border-light);
+}
+
+[data-color-scheme="light"] .code-editor .cm-gutters {
+  background: var(--surface-elevated);
+  border-right-color: var(--surface-border-light);
+}
+
+/* RTL support for CodeMirror */
+[dir="rtl"] .code-editor .cm-content {
+  direction: ltr;
+}
+
+[dir="rtl"] .code-editor .cm-gutters {
+  border-right: none;
+  border-left: 1px solid var(--surface-border-light);
+}
+
+/* Lint tooltip */
+.code-editor .cm-tooltip-lint {
+  background: var(--surface-elevated);
+  border: 1px solid var(--surface-border-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-size: 0.75rem;
+  padding: var(--space-xs) var(--space-sm);
+  box-shadow: var(--shadow-lg);
+}
+
+/* Scrollbar in editor */
+.code-editor .cm-scroller::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+.code-editor .cm-scroller::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.code-editor .cm-scroller::-webkit-scrollbar-thumb {
+  background: var(--text-muted);
+  border-radius: 4px;
+}
+
+.code-editor .cm-scroller::-webkit-scrollbar-thumb:hover {
+  background: var(--text-secondary);
+}
+
 /* ===== Animations ===== */
 @keyframes fadeIn {
   from {

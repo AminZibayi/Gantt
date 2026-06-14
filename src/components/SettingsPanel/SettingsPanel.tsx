@@ -4,6 +4,8 @@ import { FiX, FiUpload, FiTrash2 } from "react-icons/fi";
 import * as yaml from "js-yaml";
 import type { AppSettings, BrandingConfig, GanttData } from "../../types";
 import { ACTIVITY_COLORS } from "../../config/defaultData";
+import YamlEditor from "./YamlEditor";
+
 
 interface SettingsPanelProps {
   open: boolean;
@@ -287,13 +289,7 @@ export default function SettingsPanel({
             <>
               <div className='form-group'>
                 <label className='form-label'>{t("settings.editYaml")}</label>
-                <textarea
-                  className='code-editor'
-                  value={yamlContent}
-                  onChange={(e) => setYamlContent(e.target.value)}
-                  dir='ltr'
-                  style={{ fontFamily: "var(--font-mono)" }}
-                />
+                <YamlEditor value={yamlContent} onChange={setYamlContent} className="code-editor" />
               </div>
               {yamlError && (
                 <div
