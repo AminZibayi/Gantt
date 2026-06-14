@@ -74,6 +74,18 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
   const ganttRef = useRef<any>(null);
   const initializedRef = useRef(false);
   const lastSerializedRef = useRef<string>("");
+  const selectedLinkIdsRef = useRef<(string | number)[]>([]);
+  selectedLinkIdsRef.current = selectedLinkIds;
+  const linkClickedRef = useRef(false);
+
+  const onSelectTasksRef = useRef(onSelectTasks);
+  onSelectTasksRef.current = onSelectTasks;
+
+  const onSelectLinkClickRef = useRef(onSelectLinkClick);
+  onSelectLinkClickRef.current = onSelectLinkClick;
+
+  const onDataChangeRef = useRef(onDataChange);
+  onDataChangeRef.current = onDataChange;
 
   useImperativeHandle(
     ref,
@@ -296,8 +308,11 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       };
       // Highlight selected links (arrows)
       gantt.templates.link_class = (link: any) => {
-        if (selectedLinkIds && selectedLinkIds.includes(link.id)) {
-          return "selected-link";
+        if (selectedLinkIdsRef.current) {
+          const isSelected = selectedLinkIdsRef.current.some(id => String(id) === String(link.id));
+          if (isSelected) {
+            return "selected-link";
+          }
         }
         return "";
       };
@@ -588,12 +603,33 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         });
       }
     },
-    [settings, selectedLinkIds]
+    [settings]
   );
+
 
   // Initialize gantt
   useEffect(() => {
     if (!containerRef.current) return;
+
+    let isMounted = true;
+    const eventIds: string[] = [];
+
+    const handleNativeMouseDown = (e: MouseEvent | TouchEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.closest(".gantt_task_link") ||
+        target.closest(".gantt_line_wrapper") ||
+        target.closest(".gantt_link_arrow") ||
+        target.closest(".gantt_link_point")
+      ) {
+        linkClickedRef.current = true;
+      }
+    };
+
+    const container = containerRef.current;
+    container.addEventListener("mousedown", handleNativeMouseDown, { capture: true });
+    container.addEventListener("touchstart", handleNativeMouseDown, { capture: true });
+    container.addEventListener("click", handleNativeMouseDown, { capture: true });
 
     // Dynamically import gantt from local codebase
     const initGantt = async () => {
@@ -604,6 +640,8 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
         console.error("Failed to load dhtmlxgantt");
         return;
       }
+
+      if (!isMounted) return;
 
       ganttRef.current = gantt;
 
@@ -616,7 +654,6 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       });
 
       configureGantt(gantt);
-
       // Initialize
       gantt.init(containerRef.current!);
       gantt.parse(data);
@@ -624,87 +661,125 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       initializedRef.current = true;
 
       const updateSelection = () => {
-        if (onSelectTasks) {
+        if (onSelectTasksRef.current) {
           const selected = gantt.getSelectedTasks();
-          onSelectTasks(selected);
+          onSelectTasksRef.current(selected);
         }
       };
+      eventIds.push(
+        gantt.attachEvent("onLinkClick", (id: string | number, e: MouseEvent) => {
+          linkClickedRef.current = true;
+          setTimeout(() => {
+            linkClickedRef.current = false;
+          }, 0);
+          const isCtrl = e && (e.ctrlKey || e.metaKey || e.shiftKey);
+          onSelectLinkClickRef.current?.(id, !!isCtrl);
+        })
+      );
 
-      // Event handlers
-      gantt.attachEvent("onLinkClick", (id: string | number) => {
-        const e = (window.event as MouseEvent) || ({} as any);
-        const isCtrl = e.ctrlKey || e.metaKey || e.shiftKey;
-        onSelectLinkClick?.(id, isCtrl);
-      });
+      eventIds.push(
+        gantt.attachEvent("onBeforeTaskSelected", () => {
+          if (linkClickedRef.current) {
+            return false;
+          }
+          return true;
+        })
+      );
 
-      gantt.attachEvent("onTaskClick", (id: string | number) => {
-        onSelectLinkClick?.(null, false);
-        return true;
-      });
+      eventIds.push(
+        gantt.attachEvent("onTaskClick", (id: string | number) => {
+          if (linkClickedRef.current) return true;
+          onSelectLinkClickRef.current?.(null, false);
+          return true;
+        })
+      );
 
-      gantt.attachEvent("onEmptyClick", () => {
-        gantt.unselectTask();
-        onSelectLinkClick?.(null, false);
-      });
-      gantt.attachEvent("onTaskSelected", () => {
-        updateSelection();
-      });
+      eventIds.push(
+        gantt.attachEvent("onEmptyClick", () => {
+          if (linkClickedRef.current) return;
+          gantt.unselectTask();
+          onSelectLinkClickRef.current?.(null, false);
+        })
+      );
 
-      gantt.attachEvent("onTaskUnselected", () => {
-        updateSelection();
-      });
-      gantt.attachEvent("onAfterTaskAdd", (_id: string, task: any) => {
-        const currentData = {
-          data: gantt.serialize().data,
-          links: gantt.serialize().links,
-        };
-        lastSerializedRef.current = JSON.stringify(currentData);
-        onDataChange(currentData);
-      });
+      eventIds.push(
+        gantt.attachEvent("onTaskSelected", () => {
+          updateSelection();
+        })
+      );
 
-      gantt.attachEvent("onAfterTaskUpdate", (_id: string, task: any) => {
-        const currentData = {
-          data: gantt.serialize().data,
-          links: gantt.serialize().links,
-        };
-        lastSerializedRef.current = JSON.stringify(currentData);
-        onDataChange(currentData);
-      });
+      eventIds.push(
+        gantt.attachEvent("onTaskUnselected", () => {
+          updateSelection();
+        })
+      );
 
-      gantt.attachEvent("onAfterTaskDelete", (_id: string) => {
-        const currentData = {
-          data: gantt.serialize().data,
-          links: gantt.serialize().links,
-        };
-        lastSerializedRef.current = JSON.stringify(currentData);
-        onDataChange(currentData);
-        updateSelection();
-      });
+      eventIds.push(
+        gantt.attachEvent("onAfterTaskAdd", (_id: string, task: any) => {
+          const currentData = {
+            data: gantt.serialize().data,
+            links: gantt.serialize().links,
+          };
+          lastSerializedRef.current = JSON.stringify(currentData);
+          onDataChangeRef.current?.(currentData);
+        })
+      );
+      eventIds.push(
+        gantt.attachEvent("onAfterTaskUpdate", (_id: string, task: any) => {
+          const currentData = {
+            data: gantt.serialize().data,
+            links: gantt.serialize().links,
+          };
+          lastSerializedRef.current = JSON.stringify(currentData);
+          onDataChangeRef.current?.(currentData);
+        })
+      );
 
-      gantt.attachEvent("onAfterLinkAdd", (_id: string, link: any) => {
-        const currentData = {
-          data: gantt.serialize().data,
-          links: gantt.serialize().links,
-        };
-        lastSerializedRef.current = JSON.stringify(currentData);
-        onDataChange(currentData);
-      });
+      eventIds.push(
+        gantt.attachEvent("onAfterTaskDelete", (_id: string) => {
+          const currentData = {
+            data: gantt.serialize().data,
+            links: gantt.serialize().links,
+          };
+          lastSerializedRef.current = JSON.stringify(currentData);
+          onDataChangeRef.current?.(currentData);
+          updateSelection();
+        })
+      );
 
-      gantt.attachEvent("onAfterLinkDelete", (_id: string) => {
-        const currentData = {
-          data: gantt.serialize().data,
-          links: gantt.serialize().links,
-        };
-        lastSerializedRef.current = JSON.stringify(currentData);
-        onDataChange(currentData);
-        onSelectLinkClick?.(null, false);
-      });
+      eventIds.push(
+        gantt.attachEvent("onAfterLinkAdd", (_id: string, link: any) => {
+          const currentData = {
+            data: gantt.serialize().data,
+            links: gantt.serialize().links,
+          };
+          lastSerializedRef.current = JSON.stringify(currentData);
+          onDataChangeRef.current?.(currentData);
+        })
+      );
+
+      eventIds.push(
+        gantt.attachEvent("onAfterLinkDelete", (_id: string) => {
+          const currentData = {
+            data: gantt.serialize().data,
+            links: gantt.serialize().links,
+          };
+          lastSerializedRef.current = JSON.stringify(currentData);
+          onDataChangeRef.current?.(currentData);
+          onSelectLinkClickRef.current?.(null, false);
+        })
+      );
     };
 
     initGantt();
 
     return () => {
+      isMounted = false;
+      container.removeEventListener("mousedown", handleNativeMouseDown, { capture: true } as any);
+      container.removeEventListener("touchstart", handleNativeMouseDown, { capture: true } as any);
+      container.removeEventListener("click", handleNativeMouseDown, { capture: true } as any);
       if (ganttRef.current) {
+        eventIds.forEach(id => ganttRef.current.detachEvent(id));
         ganttRef.current.clearAll();
       }
     };
@@ -717,6 +792,12 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
     configureGantt(gantt);
     gantt.render();
   }, [settings, configureGantt]);
+
+  useEffect(() => {
+    if (ganttRef.current && initializedRef.current) {
+      ganttRef.current.render();
+    }
+  }, [selectedLinkIds]);
 
   // Update data when it changes externally
   useEffect(() => {

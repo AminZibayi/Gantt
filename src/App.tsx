@@ -27,28 +27,61 @@ export default function App() {
   const [showSettings, setShowSettings] = useState(false);
   const [selectedTaskIds, setSelectedTaskIds] = useState<(string | number)[]>([]);
   const [selectedLinkIds, setSelectedLinkIds] = useState<(string | number)[]>([]);
+  const selectedLinkIdsRef = useRef<(string | number)[]>([]);
+  selectedLinkIdsRef.current = selectedLinkIds;
+  const isModifierActiveRef = useRef(false);
+  const [, setIsModifierActive] = useState(false);
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.ctrlKey || e.metaKey || e.shiftKey || e.key === "Control" || e.key === "Shift" || e.key === "Meta") {
+        isModifierActiveRef.current = true;
+        setIsModifierActive(true);
+      }
+    };
+    const handleKeyUp = (e: KeyboardEvent) => {
+      const keys = ["Control", "Shift", "Meta"];
+      if (!e.ctrlKey && !e.metaKey && !e.shiftKey && !keys.includes(e.key)) {
+        isModifierActiveRef.current = false;
+        setIsModifierActive(false);
+      }
+    };
+    const handleBlur = () => {
+      isModifierActiveRef.current = false;
+      setIsModifierActive(false);
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    window.addEventListener("keyup", handleKeyUp);
+    window.addEventListener("blur", handleBlur);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+      window.removeEventListener("keyup", handleKeyUp);
+      window.removeEventListener("blur", handleBlur);
+    };
+  }, []);
 
   const handleSelectLinkClick = useCallback((id: string | number | null, isCtrl: boolean) => {
     if (id === null) {
+      selectedLinkIdsRef.current = [];
       setSelectedLinkIds([]);
-    } else {
-      setSelectedLinkIds(prev => {
-        if (isCtrl) {
-          if (prev.includes(id)) {
-            return prev.filter(x => x !== id);
-          } else {
-            return [...prev, id];
-          }
-        } else {
-          return [id];
-        }
-      });
-      // Clear task selection
-      setSelectedTaskIds([]);
-      ganttChartRef.current?.clearTaskSelection();
+      return;
     }
+    const isMulti = isCtrl || isModifierActiveRef.current;
+    let next: (string | number)[];
+    if (isMulti) {
+      const exists = selectedLinkIdsRef.current.some(x => String(x) === String(id));
+      next = exists
+        ? selectedLinkIdsRef.current.filter(x => String(x) !== String(id))
+        : [...selectedLinkIdsRef.current, id];
+    } else {
+      next = [id];
+    }
+    selectedLinkIdsRef.current = next;
+    setSelectedLinkIds(next);
+    setSelectedTaskIds([]);
+    ganttChartRef.current?.clearTaskSelection();
   }, []);
-
   const handleDeleteTask = useCallback(() => {
     if (selectedTaskIds.length > 0) {
       ganttChartRef.current?.deleteTasks(selectedTaskIds);

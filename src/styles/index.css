@@ -956,11 +956,21 @@ html[dir="rtl"] body {
 }
 
 /* Highlight selected links (arrows) */
-.selected-link .gantt_line_wrapper div {
+.selected-link .gantt_line,
+.selected-link .gantt_line_wrapper div,
+.selected-link path,
+.selected-link line {
+  stroke: var(--color-danger) !important;
   background-color: var(--color-danger) !important;
-  box-shadow: 0 0 5px var(--color-danger);
+  stroke-width: 3px !important;
+  box-shadow: 0 0 5px var(--color-danger) !important;
 }
-.selected-link .gantt_link_arrow {
+
+.selected-link .gantt_arrow,
+.selected-link .gantt_link_arrow,
+.selected-link polygon {
+  fill: var(--color-danger) !important;
+  stroke: var(--color-danger) !important;
   border-left-color: var(--color-danger) !important;
   border-right-color: var(--color-danger) !important;
   border-top-color: var(--color-danger) !important;
