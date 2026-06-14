@@ -7,7 +7,6 @@ import { linter, lintGutter, Diagnostic } from "@codemirror/lint";
 import {
   syntaxHighlighting,
   HighlightStyle,
-  defaultHighlightStyle,
 } from "@codemirror/language";
 import { tags } from "@lezer/highlight";
 import * as yamlLib from "js-yaml";
@@ -39,15 +38,15 @@ const yamlLinter = linter((view: EditorView) => {
 });
 
 const customHighlightStyle = HighlightStyle.define([
-  { tag: tags.keyword, color: "var(--cm-keyword, #ff9d00)" },
-  { tag: tags.string, color: "var(--cm-string, #00e676)" },
-  { tag: tags.number, color: "var(--cm-number, #82b1ff)" },
-  { tag: tags.comment, color: "var(--cm-comment, #9e9e9e)" },
-  { tag: tags.operator, color: "var(--cm-operator, #ffab91)" },
-  { tag: tags.punctuation, color: "var(--cm-punctuation, #b0bec5)" },
-  { tag: tags.propertyName, color: "var(--cm-property, #82b1ff)" },
-  { tag: tags.bool, color: "var(--cm-bool, #ff9d00)" },
-  { tag: tags.null, color: "var(--cm-null, #ff9d00)" },
+  { tag: tags.keyword, color: "var(--cm-keyword, #c586c0)" },
+  { tag: tags.string, color: "var(--cm-string, #ce9178)" },
+  { tag: tags.number, color: "var(--cm-number, #b5cea8)" },
+  { tag: tags.comment, color: "var(--cm-comment, #6a9955)" },
+  { tag: tags.operator, color: "var(--cm-operator, #d4d4d4)" },
+  { tag: tags.punctuation, color: "var(--cm-punctuation, #d4d4d4)" },
+  { tag: tags.propertyName, color: "var(--cm-property, #9cdcfe)" },
+  { tag: tags.bool, color: "var(--cm-bool, #569cd6)" },
+  { tag: tags.null, color: "var(--cm-null, #569cd6)" },
 ]);
 
 export default function YamlEditor({ value, onChange, className = "" }: YamlEditorProps) {
@@ -64,9 +63,12 @@ export default function YamlEditor({ value, onChange, className = "" }: YamlEdit
         yaml(),
         keymap.of([...defaultKeymap, indentWithTab]),
         yamlLinter,
-        lintGutter(),
-        syntaxHighlighting(defaultHighlightStyle),
         syntaxHighlighting(customHighlightStyle),
+        EditorView.contentAttributes.of({
+          spellcheck: "false",
+          autocapitalize: "off",
+          autocorrect: "off",
+        }),
         EditorView.updateListener.of((update) => {
           if (update.docChanged) {
             isInternalChange.current = true;

@@ -17,14 +17,22 @@
   --surface-elevated: #242842;
   --surface-hover: #2d3352;
   --surface-border: rgba(255, 255, 255, 0.08);
-  --surface-border-light: rgba(255, 255, 255, 0.12);
-
   /* Text */
   --text-primary: #f0f0f5;
   --text-secondary: #a0a3b5;
   --text-muted: #6b6f82;
   --text-inverse: #0f1117;
 
+  /* CodeMirror Syntax Highlighting (Dark) */
+  --cm-keyword: #c586c0;
+  --cm-string: #ce9178;
+  --cm-number: #b5cea8;
+  --cm-comment: #6a9955;
+  --cm-operator: #d4d4d4;
+  --cm-punctuation: #d4d4d4;
+  --cm-property: #9cdcfe;
+  --cm-bool: #569cd6;
+  --cm-null: #569cd6;
   /* Typography */
   --font-fa: "Vazirmatn", "Tahoma", sans-serif;
   --font-en: "Inter", "Segoe UI", sans-serif;
@@ -77,6 +85,17 @@
   --text-secondary: #555870;
   --text-muted: #8588a0;
   --text-inverse: #f4f5fb;
+
+  /* CodeMirror Syntax Highlighting (Light) */
+  --cm-keyword: #8250df;
+  --cm-string: #a31515;
+  --cm-number: #098658;
+  --cm-comment: #6a9955;
+  --cm-operator: #000000;
+  --cm-punctuation: #000000;
+  --cm-property: #0000ff;
+  --cm-bool: #0000ff;
+  --cm-null: #0000ff;
 
   /* Shadows */
   --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.1);
