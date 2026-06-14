@@ -37,6 +37,37 @@ export default function SettingsPanel({
   const [yamlContent, setYamlContent] = useState("");
   const [yamlError, setYamlError] = useState("");
 
+  const [width, setWidth] = useState(320);
+  const [isResizing, setIsResizing] = useState(false);
+
+  const handleMouseDown = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsResizing(true);
+    const startX = e.clientX;
+    const startWidth = width;
+    const isRtl = document.documentElement.dir === "rtl";
+
+    const handleMouseMove = (moveEvent: MouseEvent) => {
+      const deltaX = moveEvent.clientX - startX;
+      let newWidth = isRtl ? startWidth + deltaX : startWidth - deltaX;
+
+      const minWidth = 280;
+      const maxWidth = Math.min(800, window.innerWidth - 50);
+      newWidth = Math.max(minWidth, Math.min(maxWidth, newWidth));
+
+      setWidth(newWidth);
+    };
+
+    const handleMouseUp = () => {
+      setIsResizing(false);
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+
+    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mouseup", handleMouseUp);
+  };
+
   const tabs = [
     { id: "general" as const, label: t("settings.general") },
     { id: "branding" as const, label: t("settings.branding") },
@@ -108,7 +139,11 @@ export default function SettingsPanel({
   return (
     <>
       {open && <div className='modal-overlay' style={{ background: "transparent" }} onClick={onClose} />}
-      <div className={`settings-panel ${open ? "open" : ""}`}>
+      <div
+        className={`settings-panel ${open ? "open" : ""} ${isResizing ? "resizing" : ""}`}
+        style={{ width: `${width}px` }}
+      >
+        <div className="settings-resizer" onMouseDown={handleMouseDown} />
         <div className='settings-header'>
           <h3 className='settings-title'>{t("settings.title")}</h3>
           <button className='btn btn-ghost btn-icon' onClick={onClose}>
