@@ -137,6 +137,14 @@ export default function App() {
     return () => window.removeEventListener("keydown", handleGlobalKeyDown, true);
   }, [selectedTaskIds, selectedLinkIds, handleDeleteTask]);
 
+  // Stable refs for undo/redo so the event listener never detaches/re-attaches
+  const undoRef = useRef(undo);
+  const redoRef = useRef(redo);
+  useEffect(() => {
+    undoRef.current = undo;
+    redoRef.current = redo;
+  }, [undo, redo]);
+
   // Undo/Redo keyboard shortcuts (Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y)
   useEffect(() => {
     const handleUndoRedo = (e: KeyboardEvent) => {
@@ -155,15 +163,19 @@ export default function App() {
       const key = e.key.toLowerCase();
       if (key === "z" && !e.shiftKey) {
         e.preventDefault();
-        undo();
+        e.stopPropagation();
+        undoRef.current();
       } else if ((key === "z" && e.shiftKey) || key === "y") {
         e.preventDefault();
-        redo();
+        e.stopPropagation();
+        redoRef.current();
       }
     };
+    
+    // Bind exactly once, in the capture phase, to intercept before DHTMLX
     window.addEventListener("keydown", handleUndoRedo, true);
     return () => window.removeEventListener("keydown", handleUndoRedo, true);
-  }, [undo, redo]);
+  }, []);
   const currentLang = settings.language;
   const dir = currentLang === "fa" ? "rtl" : "ltr";
 
