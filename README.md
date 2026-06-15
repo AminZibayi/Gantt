@@ -7,6 +7,10 @@
   Bilingual project scheduling — Jalali & Gregorian calendars, keyboard-first, offline-capable
 </p>
 
+<p align="center">
+  <a href="https://aminzibayi.github.io/Gantt/">Live Demo</a>
+</p>
+
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![React 19](https://img.shields.io/badge/react-19-blue.svg)](https://react.dev)
 [![TypeScript 5.7](https://img.shields.io/badge/typescript-5.7-blue.svg)](https://www.typescriptlang.org)
