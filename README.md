@@ -7,17 +7,11 @@
   Bilingual project scheduling — Jalali & Gregorian calendars, keyboard-first, offline-capable
 </p>
 
----
-
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 [![React 19](https://img.shields.io/badge/react-19-blue.svg)](https://react.dev)
 [![TypeScript 5.7](https://img.shields.io/badge/typescript-5.7-blue.svg)](https://www.typescriptlang.org)
 [![Vite 6](https://img.shields.io/badge/vite-6-blue.svg)](https://vitejs.dev)
 [![dhtmlxGantt 9.1](https://img.shields.io/badge/dhtmlxgantt-9.1-blue.svg)](https://dhtmlx.com/docs/products/dhtmlxGantt/)
-
-| English | [فارسی](fa.md) |
-
----
 
 ## Table of Contents
 
