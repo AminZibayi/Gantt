@@ -17,7 +17,7 @@ const ZOOM_LEVELS: AppSettings["zoomLevel"][] = ["day", "week", "month", "quarte
 
 export default function App() {
   const { i18n } = useTranslation();
-  const { data, setData, importData, getNextId } = useGanttData();
+  const { data, setData, importData, getNextId, undo, redo, canUndo, canRedo } = useGanttData();
   const { settings, updateSetting } = useSettings();
   const { branding, updateBranding, setLogo, removeLogo } = useBranding();
   const ganttChartRef = useRef<GanttChartRef>(null);
@@ -133,11 +133,37 @@ export default function App() {
       }
     };
 
-    window.addEventListener("keydown", handleGlobalKeyDown);
-    return () => window.removeEventListener("keydown", handleGlobalKeyDown);
+    window.addEventListener("keydown", handleGlobalKeyDown, true);
+    return () => window.removeEventListener("keydown", handleGlobalKeyDown, true);
   }, [selectedTaskIds, selectedLinkIds, handleDeleteTask]);
 
-  // Sync language, direction, HTML attributes, and color scheme
+  // Undo/Redo keyboard shortcuts (Ctrl+Z / Ctrl+Shift+Z / Ctrl+Y)
+  useEffect(() => {
+    const handleUndoRedo = (e: KeyboardEvent) => {
+      const target = e.target as HTMLElement;
+      if (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      ) {
+        return;
+      }
+
+      const mod = e.ctrlKey || e.metaKey;
+      if (!mod) return;
+      
+      const key = e.key.toLowerCase();
+      if (key === "z" && !e.shiftKey) {
+        e.preventDefault();
+        undo();
+      } else if ((key === "z" && e.shiftKey) || key === "y") {
+        e.preventDefault();
+        redo();
+      }
+    };
+    window.addEventListener("keydown", handleUndoRedo, true);
+    return () => window.removeEventListener("keydown", handleUndoRedo, true);
+  }, [undo, redo]);
   const currentLang = settings.language;
   const dir = currentLang === "fa" ? "rtl" : "ltr";
 
@@ -259,6 +285,10 @@ export default function App() {
         onMoveTaskDown={handleMoveTaskDown}
         onIndentTask={handleIndentTask}
         onOutdentTask={handleOutdentTask}
+        onUndo={undo}
+        onRedo={redo}
+        canUndo={canUndo}
+        canRedo={canRedo}
       />
 
       <div className='app-main'>

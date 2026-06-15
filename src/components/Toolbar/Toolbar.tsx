@@ -16,6 +16,8 @@ import {
   FiArrowDown,
   FiChevronRight,
   FiChevronLeft,
+  FiRotateCcw,
+  FiRotateCw,
 } from "react-icons/fi";
 
 interface ToolbarProps {
@@ -35,6 +37,10 @@ interface ToolbarProps {
   onMoveTaskDown: () => void;
   onIndentTask: () => void;
   onOutdentTask: () => void;
+  onUndo: () => void;
+  onRedo: () => void;
+  canUndo: boolean;
+  canRedo: boolean;
 }
 export default function Toolbar({
   onAddTask,
@@ -53,6 +59,10 @@ export default function Toolbar({
   onMoveTaskDown,
   onIndentTask,
   onOutdentTask,
+  onUndo,
+  onRedo,
+  canUndo,
+  canRedo,
 }: ToolbarProps) {
   const { t } = useTranslation();
 
@@ -71,8 +81,25 @@ export default function Toolbar({
           <FiPlus /> {t("toolbar.addTask")}
         </button>
       </div>
+      <div className='toolbar-group'>
+        <button
+          className='btn btn-ghost btn-icon btn-sm tooltip'
+          data-tooltip={t("toolbar.undo")}
+          disabled={!canUndo}
+          onClick={onUndo}>
+          <FiRotateCcw />
+        </button>
+        <button
+          className='btn btn-ghost btn-icon btn-sm tooltip'
+          data-tooltip={t("toolbar.redo")}
+          disabled={!canRedo}
+          onClick={onRedo}>
+          <FiRotateCw />
+        </button>
+      </div>
 
       <div className='toolbar-separator' />
+
 
       <div className='toolbar-group'>
         <button className='btn btn-secondary btn-sm' onClick={onImport}>

@@ -77,7 +77,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
   const selectedLinkIdsRef = useRef<(string | number)[]>([]);
   selectedLinkIdsRef.current = selectedLinkIds;
   const linkClickedRef = useRef(false);
-
+  const isParsingRef = useRef(false);
   const onSelectTasksRef = useRef(onSelectTasks);
   onSelectTasksRef.current = onSelectTasks;
 
@@ -656,8 +656,9 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       configureGantt(gantt);
       // Initialize
       gantt.init(containerRef.current!);
-      gantt.parse(data);
-      lastSerializedRef.current = JSON.stringify(data);
+      const initDataStr = JSON.stringify(data);
+      gantt.parse(initDataStr);
+      lastSerializedRef.current = initDataStr;
       initializedRef.current = true;
 
       const updateSelection = () => {
@@ -716,6 +717,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
 
       eventIds.push(
         gantt.attachEvent("onAfterTaskAdd", (_id: string, task: any) => {
+          if (isParsingRef.current) return;
           const currentData = {
             data: gantt.serialize().data,
             links: gantt.serialize().links,
@@ -726,6 +728,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
       );
       eventIds.push(
         gantt.attachEvent("onAfterTaskUpdate", (_id: string, task: any) => {
+          if (isParsingRef.current) return;
           const currentData = {
             data: gantt.serialize().data,
             links: gantt.serialize().links,
@@ -737,6 +740,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
 
       eventIds.push(
         gantt.attachEvent("onAfterTaskDelete", (_id: string) => {
+          if (isParsingRef.current) return;
           const currentData = {
             data: gantt.serialize().data,
             links: gantt.serialize().links,
@@ -749,6 +753,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
 
       eventIds.push(
         gantt.attachEvent("onAfterLinkAdd", (_id: string, link: any) => {
+          if (isParsingRef.current) return;
           const currentData = {
             data: gantt.serialize().data,
             links: gantt.serialize().links,
@@ -760,6 +765,7 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
 
       eventIds.push(
         gantt.attachEvent("onAfterLinkDelete", (_id: string) => {
+          if (isParsingRef.current) return;
           const currentData = {
             data: gantt.serialize().data,
             links: gantt.serialize().links,
@@ -807,8 +813,13 @@ const GanttChart = forwardRef<GanttChartRef, GanttChartProps>(function GanttChar
     if (dataStr === lastSerializedRef.current) {
       return;
     }
-    gantt.clearAll();
-    gantt.parse(data);
+    isParsingRef.current = true;
+    try {
+      gantt.clearAll();
+      gantt.parse(dataStr);
+    } finally {
+      isParsingRef.current = false;
+    }
     lastSerializedRef.current = dataStr;
   }, [data]);
 
